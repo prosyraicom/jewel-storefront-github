@@ -31,10 +31,8 @@ export function ProductInfo({ product }: { product: Product }) {
       />
       <VariantDropdown options={product.options} variants={product.variants} />
 
-      <div className="mt-auto">
-        <AddToCart product={product} />
-        {/* <BuyNowButton product={product} /> */}
-      </div>
+      <AddToCart product={product} />
+      {/* <BuyNowButton product={product} /> */}
 
       {/* Product Features with Icons */}
       <ProductFeatures />

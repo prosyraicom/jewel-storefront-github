@@ -36,7 +36,7 @@ export function ProductFeatures() {
             <div className="flex justify-center items-center mb-1 text-green-500">
               <span
                 className="material-symbols-outlined"
-                style={{ fontSize: "40px" }}
+                style={{ fontSize: "36px" }}
               >
                 {feature.icon}
               </span>

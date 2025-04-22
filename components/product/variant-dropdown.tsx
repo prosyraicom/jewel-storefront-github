@@ -17,7 +17,7 @@ export function VariantDropdown({ options, variants }: VariantDropdownProps) {
   }
 
   return (
-    <div className="mb-6 text-black">
+    <div className="mb-2 text-black">
       {options.map((option) => {
         const optionNameLowerCase = option.name.toLowerCase();
         const selectedValue = state[optionNameLowerCase] || option.values[0];
