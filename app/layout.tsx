@@ -1,7 +1,6 @@
 import { CartProvider } from "components/cart/cart-context";
 import { Navbar } from "components/layout/navbar";
 import { WelcomeToast } from "components/welcome-toast";
-import { GeistSans } from "geist/font/sans";
 import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
 import { Jost } from "next/font/google";
@@ -38,7 +37,7 @@ export default async function RootLayout({
   const cart = getCart();
 
   return (
-    <html lang="en" className={`${GeistSans.variable} ${jost.className}`}>
+    <html lang="en" className={`${jost.className}`}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
