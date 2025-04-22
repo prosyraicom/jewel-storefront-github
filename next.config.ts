@@ -4,6 +4,7 @@ export default {
     inlineCss: true,
     useCache: true,
   },
+  distDir: ".next",
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
