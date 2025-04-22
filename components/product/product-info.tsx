@@ -4,9 +4,12 @@ import { AddToCart } from "components/cart/add-to-cart";
 import Prose from "components/prose";
 import { Product } from "lib/shopify/types";
 import { BuyNowButton } from "./buy-now-button";
+import { EstimatedShipping } from "./estimated-shipping";
+import { ProductFeatures } from "./product-features";
 import { ProductPrice } from "./product-price";
 import { ProductRating } from "./product-rating";
 import { ProductTitle } from "./product-title";
+import { UrgencyText } from "./urgency-text";
 import { VariantDropdown } from "./variant-dropdown";
 
 export function ProductInfo({ product }: { product: Product }) {
@@ -20,6 +23,7 @@ export function ProductInfo({ product }: { product: Product }) {
 
   return (
     <div className="flex flex-col h-full text-black">
+      <UrgencyText text="SOLD OUT 3X+ | Selling fast." />
       <ProductTitle title={product.title} />
       <ProductRating />
       <ProductPrice
@@ -33,12 +37,20 @@ export function ProductInfo({ product }: { product: Product }) {
         <BuyNowButton product={product} />
       </div>
 
-      <div className="mt-8">
+      {/* Product Features with Icons */}
+      <ProductFeatures />
+
+      {/* Estimated Shipping Text */}
+      <EstimatedShipping />
+
+      <div className="mt-8 product-description">
         {product.descriptionHtml ? (
-          <Prose
-            className="text-sm leading-normal text-black"
-            html={product.descriptionHtml}
-          />
+          <div className="text-black">
+            <Prose
+              className="text-sm leading-normal"
+              html={product.descriptionHtml}
+            />
+          </div>
         ) : null}
       </div>
     </div>

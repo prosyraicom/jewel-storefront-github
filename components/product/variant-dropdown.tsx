@@ -12,11 +12,7 @@ export function VariantDropdown({ options, variants }: VariantDropdownProps) {
   const { state, updateOption } = useProduct();
   const updateURL = useUpdateURL();
 
-  const hasNoOptionsOrJustOneOption =
-    !options.length ||
-    (options.length === 1 && options[0]?.values.length === 1);
-
-  if (hasNoOptionsOrJustOneOption) {
+  if (!options.length) {
     return null;
   }
 
@@ -38,10 +34,9 @@ export function VariantDropdown({ options, variants }: VariantDropdownProps) {
               id={`select-${optionNameLowerCase}`}
               value={selectedValue}
               onChange={(e) => {
-                const newState = updateOption(
-                  optionNameLowerCase,
-                  e.target.value
-                );
+                const newValue = e.target.value;
+                const newState = updateOption(optionNameLowerCase, newValue);
+
                 updateURL(newState);
               }}
               className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
