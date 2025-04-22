@@ -7,9 +7,16 @@ import { ProductProvider } from "components/product/product-context";
 import { ProductGuarantee } from "components/product/product-guarantee";
 import { ProductInfo } from "components/product/product-info";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
-import { getProduct } from "lib/shopify";
+import { getProduct, getProducts } from "lib/shopify";
 import { Image } from "lib/shopify/types";
 import { Suspense } from "react";
+
+export async function generateStaticParams() {
+  const products = await getProducts({});
+  return products.map((product) => ({
+    handle: product.handle,
+  }));
+}
 
 export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;

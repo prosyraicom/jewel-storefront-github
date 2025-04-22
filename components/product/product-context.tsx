@@ -1,7 +1,13 @@
-'use client';
+"use client";
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { createContext, useContext, useMemo, useOptimistic } from 'react';
+import { useRouter, useSearchParams } from "next/navigation";
+import React, {
+  createContext,
+  Suspense,
+  useContext,
+  useMemo,
+  useOptimistic,
+} from "react";
 
 type ProductState = {
   [key: string]: string;
@@ -17,7 +23,8 @@ type ProductContextType = {
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
-export function ProductProvider({ children }: { children: React.ReactNode }) {
+// Inner component that uses useSearchParams
+function ProductStateProvider({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
 
   const getInitialState = () => {
@@ -32,7 +39,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
     getInitialState(),
     (prevState: ProductState, update: ProductState) => ({
       ...prevState,
-      ...update
+      ...update,
     })
   );
 
@@ -52,18 +59,29 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
     () => ({
       state,
       updateOption,
-      updateImage
+      updateImage,
     }),
     [state]
   );
 
-  return <ProductContext.Provider value={value}>{children}</ProductContext.Provider>;
+  return (
+    <ProductContext.Provider value={value}>{children}</ProductContext.Provider>
+  );
+}
+
+// Outer provider that wraps the inner component with Suspense
+export function ProductProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductStateProvider>{children}</ProductStateProvider>
+    </Suspense>
+  );
 }
 
 export function useProduct() {
   const context = useContext(ProductContext);
   if (context === undefined) {
-    throw new Error('useProduct must be used within a ProductProvider');
+    throw new Error("useProduct must be used within a ProductProvider");
   }
   return context;
 }

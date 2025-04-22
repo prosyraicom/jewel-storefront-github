@@ -4,7 +4,6 @@ export default {
     inlineCss: true,
     useCache: true,
   },
-  output: "export",
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -14,6 +13,5 @@ export default {
         pathname: "/s/files/**",
       },
     ],
-    unoptimized: true,
   },
 };
