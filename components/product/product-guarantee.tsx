@@ -1,10 +1,10 @@
 export function ProductGuarantee() {
   return (
-    <div className="py-8 border-t border-gray-200 text-black">
-      <h2 className="text-3xl font-bold text-center mb-4 text-black">
+    <div className="py-2 max-w-3xl mx-auto text-black">
+      <h2 className="text-3xl font-semibold text-center mb-4 text-black">
         Our 90-Day Product Guarantee
       </h2>
-      <h3 className="text-xl font-semibold mb-2 text-black">
+      <h3 className="text-xl font-medium mb-2 text-black">
         100% Money-Back Guarantee
       </h3>
       <p className="mb-4 text-black">
@@ -18,7 +18,7 @@ export function ProductGuarantee() {
         your product.
       </p>
 
-      <h3 className="text-xl font-semibold mb-2 text-black">
+      <h3 className="text-xl font-medium mb-2 text-black">
         Shipping Information
       </h3>
       <p className="text-black">

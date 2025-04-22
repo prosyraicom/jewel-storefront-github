@@ -90,9 +90,9 @@ export default async function ProductPage(props: {
       />
       <div className="mx-auto max-w-7xl px-4 bg-white text-black">
         {/* Main product section with image and details */}
-        <div className="py-8 flex flex-col md:flex-row md:gap-8">
+        <div className="py-8 flex flex-col md:flex-row md:gap-4">
           {/* Left side - Product images */}
-          <div className="w-full md:w-1/2">
+          <div className="w-full md:w-7/12">
             <Suspense
               fallback={
                 <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
@@ -108,7 +108,7 @@ export default async function ProductPage(props: {
           </div>
 
           {/* Right side - Product info */}
-          <div className="w-full md:w-1/2 mt-8 md:mt-0">
+          <div className="w-full md:w-5/12 mt-8 md:mt-0">
             <Suspense fallback={null}>
               <ProductInfo product={product} />
             </Suspense>
