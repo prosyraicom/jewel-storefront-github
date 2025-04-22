@@ -1,16 +1,17 @@
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
-import { GridTileImage } from 'components/grid/tile';
-import Footer from 'components/layout/footer';
-import { Gallery } from 'components/product/gallery';
-import { ProductProvider } from 'components/product/product-context';
-import { ProductDescription } from 'components/product/product-description';
-import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
-import { getProduct, getProductRecommendations } from 'lib/shopify';
-import { Image } from 'lib/shopify/types';
-import Link from 'next/link';
-import { Suspense } from 'react';
+import { GridTileImage } from "components/grid/tile";
+import Footer from "components/layout/footer";
+import { Gallery } from "components/product/gallery";
+import { ProductProvider } from "components/product/product-context";
+import { ProductGuarantee } from "components/product/product-guarantee";
+import { ProductInfo } from "components/product/product-info";
+import { HIDDEN_PRODUCT_TAG } from "lib/constants";
+import { getProduct, getProductRecommendations } from "lib/shopify";
+import { Image } from "lib/shopify/types";
+import Link from "next/link";
+import { Suspense } from "react";
 
 export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;
@@ -31,8 +32,8 @@ export async function generateMetadata(props: {
       follow: indexable,
       googleBot: {
         index: indexable,
-        follow: indexable
-      }
+        follow: indexable,
+      },
     },
     openGraph: url
       ? {
@@ -41,35 +42,37 @@ export async function generateMetadata(props: {
               url,
               width,
               height,
-              alt
-            }
-          ]
+              alt,
+            },
+          ],
         }
-      : null
+      : null,
   };
 }
 
-export default async function ProductPage(props: { params: Promise<{ handle: string }> }) {
+export default async function ProductPage(props: {
+  params: Promise<{ handle: string }>;
+}) {
   const params = await props.params;
   const product = await getProduct(params.handle);
 
   if (!product) return notFound();
 
   const productJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
+    "@context": "https://schema.org",
+    "@type": "Product",
     name: product.title,
     description: product.description,
     image: product.featuredImage.url,
     offers: {
-      '@type': 'AggregateOffer',
+      "@type": "AggregateOffer",
       availability: product.availableForSale
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
       priceCurrency: product.priceRange.minVariantPrice.currencyCode,
       highPrice: product.priceRange.maxVariantPrice.amount,
-      lowPrice: product.priceRange.minVariantPrice.amount
-    }
+      lowPrice: product.priceRange.minVariantPrice.amount,
+    },
   };
 
   return (
@@ -77,12 +80,14 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(productJsonLd)
+          __html: JSON.stringify(productJsonLd),
         }}
       />
-      <div className="mx-auto max-w-(--breakpoint-2xl) px-4">
-        <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 md:p-12 lg:flex-row lg:gap-8 dark:border-neutral-800 dark:bg-black">
-          <div className="h-full w-full basis-full lg:basis-4/6">
+      <div className="mx-auto max-w-7xl px-4 bg-white text-black">
+        {/* Main product section with image and details */}
+        <div className="py-8 flex flex-col md:flex-row md:gap-8">
+          {/* Left side - Product images */}
+          <div className="w-full md:w-1/2">
             <Suspense
               fallback={
                 <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
@@ -91,18 +96,24 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
               <Gallery
                 images={product.images.slice(0, 5).map((image: Image) => ({
                   src: image.url,
-                  altText: image.altText
+                  altText: image.altText,
                 }))}
               />
             </Suspense>
           </div>
 
-          <div className="basis-full lg:basis-2/6">
+          {/* Right side - Product info */}
+          <div className="w-full md:w-1/2 mt-8 md:mt-0">
             <Suspense fallback={null}>
-              <ProductDescription product={product} />
+              <ProductInfo product={product} />
             </Suspense>
           </div>
         </div>
+
+        {/* Product Guarantee Section */}
+        <ProductGuarantee />
+
+        {/* Related Products Section */}
         <RelatedProducts id={product.id} />
       </div>
       <Footer />
@@ -116,7 +127,7 @@ async function RelatedProducts({ id }: { id: string }) {
   if (!relatedProducts.length) return null;
 
   return (
-    <div className="py-8">
+    <div className="py-8 border-t border-gray-200">
       <h2 className="mb-4 text-2xl font-bold">Related Products</h2>
       <ul className="flex w-full gap-4 overflow-x-auto pt-1">
         {relatedProducts.map((product) => (
@@ -134,7 +145,7 @@ async function RelatedProducts({ id }: { id: string }) {
                 label={{
                   title: product.title,
                   amount: product.priceRange.maxVariantPrice.amount,
-                  currencyCode: product.priceRange.maxVariantPrice.currencyCode
+                  currencyCode: product.priceRange.maxVariantPrice.currencyCode,
                 }}
                 src={product.featuredImage?.url}
                 fill
