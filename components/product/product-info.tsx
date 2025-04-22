@@ -1,10 +1,9 @@
 "use client";
 
 import { AddToCart } from "components/cart/add-to-cart";
-import Prose from "components/prose";
 import { Product } from "lib/shopify/types";
-import { BuyNowButton } from "./buy-now-button";
 import { EstimatedShipping } from "./estimated-shipping";
+import { ProductContent } from "./product-content";
 import { ProductFeatures } from "./product-features";
 import { ProductPrice } from "./product-price";
 import { ProductRating } from "./product-rating";
@@ -34,7 +33,7 @@ export function ProductInfo({ product }: { product: Product }) {
 
       <div className="mt-auto">
         <AddToCart product={product} />
-        <BuyNowButton product={product} />
+        {/* <BuyNowButton product={product} /> */}
       </div>
 
       {/* Product Features with Icons */}
@@ -43,16 +42,8 @@ export function ProductInfo({ product }: { product: Product }) {
       {/* Estimated Shipping Text */}
       <EstimatedShipping />
 
-      <div className="mt-8 product-description">
-        {product.descriptionHtml ? (
-          <div className="text-black">
-            <Prose
-              className="text-sm leading-normal"
-              html={product.descriptionHtml}
-            />
-          </div>
-        ) : null}
-      </div>
+      {/* Product Description */}
+      <ProductContent descriptionHtml={product.descriptionHtml} />
     </div>
   );
 }

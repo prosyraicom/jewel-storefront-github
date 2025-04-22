@@ -9,7 +9,7 @@ export function EstimatedShipping() {
       data-min-days="4"
       data-max-days="6"
     >
-      <p className="text-center">
+      <p className="text-center text-lg">
         🎁 Order in the <strong>next 15 minutes </strong>
         and get a <strong>FREE Welcome Gift </strong>with your purchase.
       </p>

@@ -21,15 +21,15 @@ export function ProductRating({
       <div className="flex text-yellow-400">
         {[...Array(5)].map((_, i) => {
           if (i < fullStars) {
-            return <StarIcon key={i} className="h-5 w-5" />;
+            return <StarIcon key={i} className="h-6 w-6" />;
           } else if (i === fullStars && hasHalfStar) {
-            return <StarIcon key={i} className="h-5 w-5" />;
+            return <StarIcon key={i} className="h-6 w-6" />;
           } else {
-            return <StarOutlineIcon key={i} className="h-5 w-5" />;
+            return <StarOutlineIcon key={i} className="h-6 w-6" />;
           }
         })}
       </div>
-      <span className="ml-2 text-sm text-black">
+      <span className="ml-2 text-base text-black">
         {rating} stars ({reviewCount} reviews)
       </span>
     </div>
