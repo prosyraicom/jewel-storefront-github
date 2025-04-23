@@ -114,12 +114,12 @@ export default function Timer({
           style={{ minWidth: "24px" }}
         >
           <span
-            className={`block ${animatingHoursTens ? "animate-slide-up" : ""}`}
+            className={`block text-sm ${animatingHoursTens ? "animate-slide-up" : ""}`}
           >
             {getTensDigit(hours)}
           </span>
           <span
-            className={`block ${animatingHoursOnes ? "animate-slide-up" : ""}`}
+            className={`block text-sm ${animatingHoursOnes ? "animate-slide-up" : ""}`}
           >
             {getOnesDigit(hours)}
           </span>
@@ -129,12 +129,12 @@ export default function Timer({
           style={{ minWidth: "24px" }}
         >
           <span
-            className={`block ${animatingMinutesTens ? "animate-slide-up" : ""}`}
+            className={`block text-sm ${animatingMinutesTens ? "animate-slide-up" : ""}`}
           >
             {getTensDigit(minutes)}
           </span>
           <span
-            className={`block ${animatingMinutesOnes ? "animate-slide-up" : ""}`}
+            className={`block text-sm ${animatingMinutesOnes ? "animate-slide-up" : ""}`}
           >
             {getOnesDigit(minutes)}
           </span>
@@ -144,12 +144,12 @@ export default function Timer({
           style={{ minWidth: "24px" }}
         >
           <span
-            className={`block ${animatingSecondsTens ? "animate-slide-up" : ""}`}
+            className={`block text-sm ${animatingSecondsTens ? "animate-slide-up" : ""}`}
           >
             {getTensDigit(seconds)}
           </span>
           <span
-            className={`block ${animatingSecondsOnes ? "animate-slide-up" : ""}`}
+            className={`block text-sm ${animatingSecondsOnes ? "animate-slide-up" : ""}`}
           >
             {getOnesDigit(seconds)}
           </span>

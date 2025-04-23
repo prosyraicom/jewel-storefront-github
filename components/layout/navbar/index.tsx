@@ -19,7 +19,7 @@ export async function Navbar() {
         className="sticky top-0 z-50 bg-black text-white flex justify-center items-center"
         style={{ width: "100%" }}
       >
-        {/* This div matches the div.yeps-content dimensions in the image */}
+        {/* This div matches the dimensions in the oriiginal */}
         <div
           className="px-3 py-2 flex flex justify-center"
           style={{ width: "321.39px", height: "56px" }}
@@ -41,16 +41,19 @@ export async function Navbar() {
       </div>
 
       {/* White header - static text part */}
-      <div className="bg-white py-4 border-b text-center">
-        <p className="text-base">
-          <span className="font-medium">
+      <div className="bg-white py-3 md:py-4 border-b text-center">
+        <p
+          className="text-[13px] md:text-xl px-[15px] md:px-[50px]"
+          style={{ letterSpacing: "1.4px", lineHeight: "1.2" }}
+        >
+          <span className="font-bold">
             90 day money-back guarantee on all orders.
           </span>{" "}
           ✨{" "}
           <span className="italic">
             Love what you buy or get your money back.
           </span>{" "}
-          ❤️
+          💖
         </p>
       </div>
 
