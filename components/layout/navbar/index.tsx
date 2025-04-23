@@ -11,7 +11,7 @@ export async function Navbar() {
     <>
       {/* Black sticky header with timer */}
       <div
-        className="sticky top-0 z-50 bg-black text-white flex justify-center items-center"
+        className="sticky top-0 z-50 bg-black text-white flex justify-center items-center z-10000"
         style={{ width: "100%" }}
       >
         {/* This div matches the dimensions in the oriiginal */}

@@ -47,12 +47,15 @@ export default function NavbarMenu({
                 ))
               ) : (
                 <>
-                  <MenuLink href="/">Home</MenuLink>
-                  <MenuLink href="/search">All Products</MenuLink>
-                  <MenuLink href="/search/jewelry">Jewelry</MenuLink>
-                  <MenuLink href="/search/accessories">Accessories</MenuLink>
-                  <MenuLink href="/about">About</MenuLink>
-                  <MenuLink href="/contact">Contact</MenuLink>
+                  <MenuLink href="#">Become a Member</MenuLink>
+                  <MenuLink href="#">VIP Login</MenuLink>
+                  <MenuLink href="#">General FAQ</MenuLink>
+                  <MenuLink href="#">Shipping FAQ</MenuLink>
+                  <MenuLink href="#">Returns and Exchanges</MenuLink>
+                  <MenuLink href="#">Accssibility</MenuLink>
+                  <MenuLink href="#">Privacy Policy</MenuLink>
+                  <MenuLink href="#">Terms of Service</MenuLink>
+                  <MenuLink href="#">Track My Order</MenuLink>
                 </>
               )}
             </div>
