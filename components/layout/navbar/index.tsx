@@ -1,4 +1,5 @@
 import { getMenu } from "lib/shopify";
+import NavbarMenu from "./menu";
 import Timer from "./timer";
 
 const { SITE_NAME } = process.env;
@@ -52,6 +53,9 @@ export async function Navbar() {
       </div>
 
       {/* White header - menu, logo, cart part */}
+      <div className="border-b">
+        <NavbarMenu menu={menu} />
+      </div>
     </>
   );
 }
