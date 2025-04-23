@@ -15,7 +15,7 @@ function SubmitButton({
   selectedVariantId: string | undefined;
 }) {
   const buttonClasses =
-    "relative flex w-full items-center justify-center rounded-md bg-green-600 p-4 tracking-wide text-white font-bold text-lg";
+    "relative flex w-full items-center justify-center rounded-md bg-[#23ae3b] p-4 tracking-wide text-white font-bold text-lg";
   const disabledClasses = "cursor-not-allowed opacity-60 hover:opacity-60";
 
   if (!availableForSale) {

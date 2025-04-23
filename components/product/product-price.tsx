@@ -14,7 +14,7 @@ export function ProductPrice({ price, compareAtPrice }: ProductPriceProps) {
 
   return (
     <div className="flex items-center mb-4">
-      <span className="text-xl font-bold mr-2 text-green-600">
+      <span className="text-xl font-bold mr-2 text-[#23ae3b]">
         {new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: price.currencyCode,
