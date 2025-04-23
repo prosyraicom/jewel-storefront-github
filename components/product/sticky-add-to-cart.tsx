@@ -5,7 +5,9 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AddToCart } from "../cart/add-to-cart";
 import { useProduct } from "./product-context";
+import { ProductPrice } from "./product-price";
 import { ProductRating } from "./product-rating";
+import { VariantDropdown } from "./variant-dropdown";
 
 interface StickyAddToCartProps {
   product: Product;
@@ -101,41 +103,20 @@ export function StickyAddToCart({
               </div>
             </div>
             {/* Price - Hidden on mobile */}
-            <div className="hidden md:flex items-center">
-              <span className="font-bold text-green-600 text-base">
-                $
-                {parseFloat(product.priceRange.maxVariantPrice.amount).toFixed(
-                  2
-                )}
-              </span>
-              {compareAtPrice && (
-                <span className="ml-2 text-xs line-through text-gray-500">
-                  ${parseFloat(compareAtPrice.amount).toFixed(2)}
-                </span>
-              )}
-              {compareAtPrice && (
-                <div className="ml-2 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded text-[10px] font-bold">
-                  {Math.round(
-                    (1 -
-                      parseFloat(product.priceRange.maxVariantPrice.amount) /
-                        parseFloat(compareAtPrice.amount)) *
-                      100
-                  )}
-                  % OFF ENDS 12AM
-                </div>
-              )}
-            </div>
+            <ProductPrice
+              price={product.priceRange.maxVariantPrice}
+              compareAtPrice={compareAtPrice}
+            />
           </div>
         </div>
 
         {/* Right section - actions */}
         <div className="flex flex-col md:flex-row items-center gap-2 w-full md:w-auto">
           {/* Variant Selector */}
-          <div className="w-full md:w-36">
-            <select className="w-full py-2 px-3 text-sm border border-gray-300 rounded-md bg-white">
-              <option>Rose Gold & Black</option>
-            </select>
-          </div>
+          <VariantDropdown
+            options={product.options}
+            variants={product.variants}
+          />
 
           {/* Add to Cart Button - Mobile version has no price */}
           <AddToCart product={product} />
