@@ -1,9 +1,9 @@
 "use client";
 
 import OpenCart from "components/cart/open-cart";
-import LogoSquare from "components/logo-square";
 import { Sheet, SheetContent, SheetTrigger } from "components/ui/sheet";
 import { Menu } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -16,7 +16,8 @@ interface MenuLinkProps {
 const MenuLink = ({ href, children, className = "" }: MenuLinkProps) => (
   <Link
     href={href}
-    className={`block py-3 text-lg hover:text-blue-600 transition-colors ${className}`}
+    className={`block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100 ${className}`}
+    style={{ letterSpacing: "1.4px" }}
   >
     {children}
   </Link>
@@ -28,7 +29,7 @@ export default function NavbarMenu({
   menu?: { title: string; path: string }[];
 }) {
   return (
-    <div className="flex items-center justify-between px-[15px] md:px-[50px] py-4 w-full max-w-[1400px] mx-auto">
+    <div className="flex items-center justify-between px-[15px] py-[10px] md:px-[50px] py-4 w-full max-w-[1400px] mx-auto">
       {/* Left side - Burger Menu */}
       <Sheet>
         <SheetTrigger className="p-2 -ml-2 transition-colors hover:text-blue-600">
@@ -64,10 +65,16 @@ export default function NavbarMenu({
       </Sheet>
 
       {/* Middle - Logo */}
-      <div className="absolute left-1/2 transform -translate-x-1/2">
-        <Link href="/" className="flex items-center">
-          <LogoSquare />
-          <span className="ml-2 text-xl font-bold uppercase">JEWEL</span>
+      <div className="flex justify-center flex-1">
+        <Link href="/" className="relative flex items-center">
+          <Image
+            src="/main-jewel-logo-black.svg"
+            alt="Jewel Logo"
+            width={130}
+            height={34}
+            className="h-auto w-[130px] md:w-[200px]"
+            priority
+          />
         </Link>
       </div>
 
