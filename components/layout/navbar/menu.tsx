@@ -65,14 +65,17 @@ export default function NavbarMenu({
       </Sheet>
 
       {/* Middle - Logo */}
-      <div className="flex justify-center flex-1">
-        <Link href="/" className="relative flex items-center">
+      <div className="flex justify-center flex-1 max-w-full">
+        <Link
+          href="/"
+          className="relative w-full max-w-[130px] md:max-w-[200px] h-[34px] md:h-[52px]"
+        >
           <Image
             src="/main-jewel-logo-black.svg"
             alt="Jewel Logo"
-            width={130}
-            height={34}
-            className="h-auto w-[130px] md:w-[200px]"
+            fill
+            sizes="(max-width: 768px) 130px, 200px"
+            className="object-contain"
             priority
           />
         </Link>

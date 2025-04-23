@@ -88,9 +88,9 @@ export default async function ProductPage(props: {
           __html: JSON.stringify(productJsonLd),
         }}
       />
-      <div className="mx-auto max-w-7xl px-4 bg-white text-black">
+      <div className="mx-auto max-w-[1400px] px-[15px] md:px-[50px] bg-white text-black">
         {/* Main product section with image and details */}
-        <div className="py-8 flex flex-col md:flex-row md:gap-4">
+        <div className="py-[36px] flex flex-col md:flex-row md:gap-4">
           {/* Left side - Product images */}
           <div className="w-full md:w-7/12">
             <Suspense
