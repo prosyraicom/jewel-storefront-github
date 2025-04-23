@@ -16,41 +16,83 @@ export default function Timer({
   const [hours, setHours] = useState(initialHours);
   const [minutes, setMinutes] = useState(initialMinutes);
   const [seconds, setSeconds] = useState(initialSeconds);
-  const [animatingHours, setAnimatingHours] = useState(false);
-  const [animatingMinutes, setAnimatingMinutes] = useState(false);
-  const [animatingSeconds, setAnimatingSeconds] = useState(false);
+
+  // Track animation states for individual digits
+  const [animatingHoursTens, setAnimatingHoursTens] = useState(false);
+  const [animatingHoursOnes, setAnimatingHoursOnes] = useState(false);
+  const [animatingMinutesTens, setAnimatingMinutesTens] = useState(false);
+  const [animatingMinutesOnes, setAnimatingMinutesOnes] = useState(false);
+  const [animatingSecondsTens, setAnimatingSecondsTens] = useState(false);
+  const [animatingSecondsOnes, setAnimatingSecondsOnes] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (seconds > 0) {
-        // Only animate seconds
-        setAnimatingSeconds(true);
+        // Determine which digits need to animate
+        const currentSecondsTens = Math.floor(seconds / 10);
+        const nextSecondsTens = Math.floor((seconds - 1) / 10);
+
+        // Always animate ones digit
+        setAnimatingSecondsOnes(true);
+
+        // Only animate tens digit if it's changing
+        if (currentSecondsTens !== nextSecondsTens) {
+          setAnimatingSecondsTens(true);
+        }
+
         setTimeout(() => {
           setSeconds(seconds - 1);
-          setAnimatingSeconds(false);
+          setAnimatingSecondsOnes(false);
+          setAnimatingSecondsTens(false);
         }, 300);
       } else if (minutes > 0) {
-        // Need to animate both minutes and seconds
-        setAnimatingMinutes(true);
-        setAnimatingSeconds(true);
+        // For minutes transition
+        const willAnimateMinutesTens = minutes % 10 === 0;
+
+        // Always animate seconds digits on rollover
+        setAnimatingSecondsOnes(true);
+        setAnimatingSecondsTens(true);
+
+        // For minutes, only animate the needed digits
+        setAnimatingMinutesOnes(true);
+        if (willAnimateMinutesTens) {
+          setAnimatingMinutesTens(true);
+        }
+
         setTimeout(() => {
           setMinutes(minutes - 1);
           setSeconds(59);
-          setAnimatingMinutes(false);
-          setAnimatingSeconds(false);
+          setAnimatingSecondsOnes(false);
+          setAnimatingSecondsTens(false);
+          setAnimatingMinutesOnes(false);
+          setAnimatingMinutesTens(false);
         }, 300);
       } else if (hours > 0) {
-        // Need to animate all three
-        setAnimatingHours(true);
-        setAnimatingMinutes(true);
-        setAnimatingSeconds(true);
+        // For hours transition
+        const willAnimateHoursTens = hours % 10 === 0;
+
+        // Always animate seconds and minutes digits on rollover
+        setAnimatingSecondsOnes(true);
+        setAnimatingSecondsTens(true);
+        setAnimatingMinutesOnes(true);
+        setAnimatingMinutesTens(true);
+
+        // For hours, only animate the needed digits
+        setAnimatingHoursOnes(true);
+        if (willAnimateHoursTens) {
+          setAnimatingHoursTens(true);
+        }
+
         setTimeout(() => {
           setHours(hours - 1);
           setMinutes(59);
           setSeconds(59);
-          setAnimatingHours(false);
-          setAnimatingMinutes(false);
-          setAnimatingSeconds(false);
+          setAnimatingSecondsOnes(false);
+          setAnimatingSecondsTens(false);
+          setAnimatingMinutesOnes(false);
+          setAnimatingMinutesTens(false);
+          setAnimatingHoursOnes(false);
+          setAnimatingHoursTens(false);
         }, 300);
       } else {
         clearInterval(interval);
@@ -60,44 +102,62 @@ export default function Timer({
     return () => clearInterval(interval);
   }, [hours, minutes, seconds]);
 
-  // Format numbers to always show two digits
-  const formatNumber = (num: number) => num.toString().padStart(2, "0");
+  // Split numbers into tens and ones digits
+  const getTensDigit = (num: number) => Math.floor(num / 10);
+  const getOnesDigit = (num: number) => num % 10;
 
   return (
     <div className="flex flex-col items-end">
       <div className="flex items-center">
         <div
-          className="relative bg-black text-white text-center px-1 mx-1"
-          style={{ minWidth: "24px" }}
-        >
-          <span className={`block ${animatingHours ? "animate-slide-up" : ""}`}>
-            {formatNumber(hours)}
-          </span>
-        </div>
-        <div
-          className="relative bg-black text-white text-center px-1 mx-1"
+          className="flex bg-black text-white text-center mx-1"
           style={{ minWidth: "24px" }}
         >
           <span
-            className={`block ${animatingMinutes ? "animate-slide-up" : ""}`}
+            className={`block ${animatingHoursTens ? "animate-slide-up" : ""}`}
           >
-            {formatNumber(minutes)}
+            {getTensDigit(hours)}
+          </span>
+          <span
+            className={`block ${animatingHoursOnes ? "animate-slide-up" : ""}`}
+          >
+            {getOnesDigit(hours)}
           </span>
         </div>
         <div
-          className="relative bg-black text-white text-center px-1 mx-1"
+          className="flex bg-black text-white text-center mx-1"
           style={{ minWidth: "24px" }}
         >
           <span
-            className={`block ${animatingSeconds ? "animate-slide-up" : ""}`}
+            className={`block ${animatingMinutesTens ? "animate-slide-up" : ""}`}
           >
-            {formatNumber(seconds)}
+            {getTensDigit(minutes)}
+          </span>
+          <span
+            className={`block ${animatingMinutesOnes ? "animate-slide-up" : ""}`}
+          >
+            {getOnesDigit(minutes)}
+          </span>
+        </div>
+        <div
+          className="flex bg-black text-white text-center mx-1"
+          style={{ minWidth: "24px" }}
+        >
+          <span
+            className={`block ${animatingSecondsTens ? "animate-slide-up" : ""}`}
+          >
+            {getTensDigit(seconds)}
+          </span>
+          <span
+            className={`block ${animatingSecondsOnes ? "animate-slide-up" : ""}`}
+          >
+            {getOnesDigit(seconds)}
           </span>
         </div>
       </div>
       <div className="flex text-xs text-white">
         <span
-          className="mx-1"
+          className="mx-2"
           style={{ minWidth: "24px", textAlign: "center" }}
         >
           HR

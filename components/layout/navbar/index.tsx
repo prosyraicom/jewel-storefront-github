@@ -34,7 +34,7 @@ export async function Navbar() {
               </span>
             </div>
           </div>
-          <div className="flex justify-center mt-1">
+          <div className="flex justify-center ml-1">
             <Timer initialHours={0} initialMinutes={16} initialSeconds={46} />
           </div>
         </div>
