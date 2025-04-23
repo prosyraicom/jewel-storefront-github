@@ -16,18 +16,42 @@ export default function Timer({
   const [hours, setHours] = useState(initialHours);
   const [minutes, setMinutes] = useState(initialMinutes);
   const [seconds, setSeconds] = useState(initialSeconds);
+  const [animatingHours, setAnimatingHours] = useState(false);
+  const [animatingMinutes, setAnimatingMinutes] = useState(false);
+  const [animatingSeconds, setAnimatingSeconds] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (seconds > 0) {
-        setSeconds(seconds - 1);
+        // Only animate seconds
+        setAnimatingSeconds(true);
+        setTimeout(() => {
+          setSeconds(seconds - 1);
+          setAnimatingSeconds(false);
+        }, 300);
       } else if (minutes > 0) {
-        setMinutes(minutes - 1);
-        setSeconds(59);
+        // Need to animate both minutes and seconds
+        setAnimatingMinutes(true);
+        setAnimatingSeconds(true);
+        setTimeout(() => {
+          setMinutes(minutes - 1);
+          setSeconds(59);
+          setAnimatingMinutes(false);
+          setAnimatingSeconds(false);
+        }, 300);
       } else if (hours > 0) {
-        setHours(hours - 1);
-        setMinutes(59);
-        setSeconds(59);
+        // Need to animate all three
+        setAnimatingHours(true);
+        setAnimatingMinutes(true);
+        setAnimatingSeconds(true);
+        setTimeout(() => {
+          setHours(hours - 1);
+          setMinutes(59);
+          setSeconds(59);
+          setAnimatingHours(false);
+          setAnimatingMinutes(false);
+          setAnimatingSeconds(false);
+        }, 300);
       } else {
         clearInterval(interval);
       }
@@ -40,27 +64,57 @@ export default function Timer({
   const formatNumber = (num: number) => num.toString().padStart(2, "0");
 
   return (
-    <span className="inline-flex items-center font-bold">
-      <div className="flex flex-col items-center mx-1">
-        <span className="bg-white text-black rounded-sm px-2 py-1">
-          {formatNumber(hours)}
-        </span>
-        <span className="text-xs mt-0.5">HR</span>
+    <div className="flex flex-col items-end">
+      <div className="flex items-center">
+        <div
+          className="relative bg-black text-white text-center px-1 mx-1"
+          style={{ minWidth: "24px" }}
+        >
+          <span className={`block ${animatingHours ? "animate-slide-up" : ""}`}>
+            {formatNumber(hours)}
+          </span>
+        </div>
+        <div
+          className="relative bg-black text-white text-center px-1 mx-1"
+          style={{ minWidth: "24px" }}
+        >
+          <span
+            className={`block ${animatingMinutes ? "animate-slide-up" : ""}`}
+          >
+            {formatNumber(minutes)}
+          </span>
+        </div>
+        <div
+          className="relative bg-black text-white text-center px-1 mx-1"
+          style={{ minWidth: "24px" }}
+        >
+          <span
+            className={`block ${animatingSeconds ? "animate-slide-up" : ""}`}
+          >
+            {formatNumber(seconds)}
+          </span>
+        </div>
       </div>
-      <span className="text-white mx-0.5">:</span>
-      <div className="flex flex-col items-center mx-1">
-        <span className="bg-white text-black rounded-sm px-2 py-1">
-          {formatNumber(minutes)}
+      <div className="flex text-xs text-white">
+        <span
+          className="mx-1"
+          style={{ minWidth: "24px", textAlign: "center" }}
+        >
+          HR
         </span>
-        <span className="text-xs mt-0.5">MIN</span>
-      </div>
-      <span className="text-white mx-0.5">:</span>
-      <div className="flex flex-col items-center mx-1">
-        <span className="bg-white text-black rounded-sm px-2 py-1">
-          {formatNumber(seconds)}
+        <span
+          className="mx-1"
+          style={{ minWidth: "24px", textAlign: "center" }}
+        >
+          MIN
         </span>
-        <span className="text-xs mt-0.5">SEC</span>
+        <span
+          className="mx-1"
+          style={{ minWidth: "24px", textAlign: "center" }}
+        >
+          SEC
+        </span>
       </div>
-    </span>
+    </div>
   );
 }

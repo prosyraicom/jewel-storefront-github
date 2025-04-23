@@ -15,13 +15,28 @@ export async function Navbar() {
   return (
     <>
       {/* Black sticky header with timer */}
-      <div className="sticky top-0 z-50 bg-black text-white py-2 px-4 flex justify-center items-center">
-        <div className="text-center">
-          <span className="font-semibold">⏰ FLASH SALE: </span>
-          <span className="font-medium">UP TO </span>
-          <span className="font-bold">90% OFF</span>
-          <span className="font-medium"> ENDS IN </span>
-          <Timer initialHours={0} initialMinutes={13} initialSeconds={53} />
+      <div
+        className="sticky top-0 z-50 bg-black text-white flex justify-center items-center"
+        style={{ width: "100%" }}
+      >
+        {/* This div matches the div.yeps-content dimensions in the image */}
+        <div
+          className="px-3 py-2 flex flex justify-center"
+          style={{ width: "321.39px", height: "56px" }}
+        >
+          <div className="text-center" style={{ lineHeight: 1.2 }}>
+            <div>
+              ⏳ <span className="font-medium">FLASH SALE:</span>
+            </div>
+            <div>
+              <span className="font-medium">
+                UP TO <u>90% OFF</u> ENDS IN
+              </span>
+            </div>
+          </div>
+          <div className="flex justify-center mt-1">
+            <Timer initialHours={0} initialMinutes={16} initialSeconds={46} />
+          </div>
         </div>
       </div>
 
