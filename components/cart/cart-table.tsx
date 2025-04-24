@@ -35,8 +35,8 @@ export default function CartTable() {
   return (
     <div className="mb-10">
       {/* Table Header */}
-      <div className="grid grid-cols-5 text-[10px] font-light uppercase tracking-wider border-b pb-3">
-        <div className="col-span-3 text-left">PRODUCT</div>
+      <div className="grid grid-cols-2 md:grid-cols-5 text-xs font-medium uppercase tracking-wider border-b pb-3">
+        <div className="md:col-span-3 text-left">PRODUCT</div>
         <div className="hidden md:block text-center">QUANTITY</div>
         <div className="text-right">TOTAL</div>
       </div>
@@ -44,10 +44,13 @@ export default function CartTable() {
       {/* Cart Items */}
       <div className="divide-y divide-gray-200">
         {cart.lines.map((item, i) => (
-          <div key={i} className="py-6 grid grid-cols-5 items-center">
-            {/* Product */}
-            <div className="col-span-3 flex items-center space-x-4">
-              <div className="relative h-30 w-30 flex-shrink-0 overflow-hidden rounded border">
+          <div
+            key={i}
+            className="py-6 grid grid-cols-2 md:grid-cols-5 items-start md:items-center"
+          >
+            {/* Product - Mobile: 2-column layout, Desktop: 5-column layout */}
+            <div className="md:col-span-3 flex items-start space-x-4">
+              <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded">
                 <Image
                   src={item.merchandise.product.featuredImage.url}
                   alt={
@@ -58,7 +61,7 @@ export default function CartTable() {
                   className="object-cover"
                 />
               </div>
-              <div>
+              <div className="flex flex-col">
                 <div className="font-medium">
                   <Link
                     href={`/product/${item.merchandise.product.handle}`}
@@ -71,17 +74,18 @@ export default function CartTable() {
                   <Price
                     amount={item.cost.totalAmount.amount}
                     currencyCode={item.cost.totalAmount.currencyCode}
-                    className="md:hidden"
                   />
                 </div>
+                {/* Variant */}
                 {item.merchandise.title !== "Default Title" && (
                   <p className="text-sm text-gray-500">
                     {item.merchandise.title}
                   </p>
                 )}
+                {/* Trash icon shown only on mobile */}
                 <button
                   onClick={() => updateCartItem(item.merchandise.id, "delete")}
-                  className="mt-2 text-gray-400 hover:text-gray-600 md:hidden"
+                  className="mt-2 text-purple-400 hover:text-purple-600 self-start md:hidden"
                   aria-label="Remove item"
                 >
                   <svg
@@ -104,7 +108,7 @@ export default function CartTable() {
               </div>
             </div>
 
-            {/* Quantity */}
+            {/* Quantity - Only visible on desktop */}
             <div className="hidden md:flex items-center justify-center">
               <button
                 onClick={() => updateCartItem(item.merchandise.id, "delete")}
@@ -130,7 +134,7 @@ export default function CartTable() {
               </button>
             </div>
 
-            {/* Total */}
+            {/* Total - Visible on both mobile and desktop */}
             <div className="flex items-center justify-end">
               <Price
                 className="font-medium"
