@@ -35,7 +35,7 @@ function CartContent() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
+    <div className="mx-auto max-w-[1400px] py-8 px-[15px] md:px-[50px]">
       {/* Cart Table */}
       <div className="mb-10">
         {/* Table Header */}
@@ -88,46 +88,43 @@ function CartContent() {
 
               {/* Quantity */}
               <div className="flex items-center justify-center mt-4 md:mt-0">
-                <div className="text-center">
-                  <span className="px-2">{item.quantity}</span>
-                </div>
+                <button
+                  onClick={() => updateCartItem(item.merchandise.id, "delete")}
+                  className="text-gray-400 hover:text-gray-600"
+                  aria-label="Remove item"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    aria-hidden="true"
+                    focusable="false"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      d="M14 3h-3.53a3.07 3.07 0 00-.6-1.65C9.44.82 8.8.5 8 .5s-1.44.32-1.87.85A3.06 3.06 0 005.53 3H2a.5.5 0 000 1h1.25v10c0 .28.22.5.5.5h8.5a.5.5 0 00.5-.5V4H14a.5.5 0 000-1zM6.91 1.98c.23-.29.58-.48 1.09-.48s.85.19 1.09.48c.2.24.3.6.36 1.02h-2.9c.05-.42.17-.78.36-1.02zm4.84 11.52h-7.5V4h7.5v9.5z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M6.55 5.25a.5.5 0 00-.5.5v6a.5.5 0 001 0v-6a.5.5 0 00-.5-.5zM9.45 5.25a.5.5 0 00-.5.5v6a.5.5 0 001 0v-6a.5.5 0 00-.5-.5z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
               </div>
 
-              {/* Total & Remove */}
+              {/* Total */}
               <div className="flex justify-between items-center mt-4 md:mt-0">
                 <Price
                   className="md:hidden"
                   amount={item.cost.totalAmount.amount}
                   currencyCode={item.cost.totalAmount.currencyCode}
                 />
-                <div className="ml-auto flex items-center">
+                <div className="ml-auto">
                   <Price
-                    className="hidden md:block mr-4 font-medium"
+                    className="hidden md:block font-medium"
                     amount={item.cost.totalAmount.amount}
                     currencyCode={item.cost.totalAmount.currencyCode}
                   />
-                  <button
-                    onClick={() =>
-                      updateCartItem(item.merchandise.id, "delete")
-                    }
-                    className="text-gray-400 hover:text-gray-600"
-                    aria-label="Remove item"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-5 h-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
                 </div>
               </div>
             </div>
@@ -137,22 +134,24 @@ function CartContent() {
 
       {/* Cart Footer */}
       <div className="border-t border-gray-200 pt-6">
-        <div className="flex justify-between items-center mb-4">
-          <span className="font-medium">Subtotal</span>
-          <Price
-            className="text-lg font-medium"
-            amount={cart.cost.subtotalAmount.amount}
-            currencyCode={cart.cost.subtotalAmount.currencyCode}
-          />
-        </div>
+        <div className="flex justify-start md:justify-end">
+          <div className="w-full md:w-72">
+            <div className="flex justify-between items-center mb-4">
+              <span className="font-medium">Subtotal</span>
+              <Price
+                className="text-lg font-medium"
+                amount={cart.cost.subtotalAmount.amount}
+                currencyCode={cart.cost.subtotalAmount.currencyCode}
+              />
+            </div>
 
-        <div>
-          <Link
-            href="/checkout"
-            className="w-full flex items-center justify-center rounded bg-green-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-green-600"
-          >
-            Check out
-          </Link>
+            <Link
+              href="/checkout"
+              className="flex items-center justify-center rounded bg-green-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-green-600"
+            >
+              Check out
+            </Link>
+          </div>
         </div>
       </div>
     </div>
