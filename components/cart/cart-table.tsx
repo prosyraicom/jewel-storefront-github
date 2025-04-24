@@ -76,16 +76,19 @@ export default function CartTable() {
                     currencyCode={item.cost.totalAmount.currencyCode}
                   />
                 </div>
-                {/* Variant */}
-                {item.merchandise.title !== "Default Title" && (
-                  <p className="text-sm text-gray-500">
-                    {item.merchandise.title}
-                  </p>
+                {/* Variant Options */}
+                {item.merchandise.selectedOptions?.map(
+                  (option, index) =>
+                    option.value !== "Default Title" && (
+                      <p key={index} className="text-sm text-gray-500">
+                        {option.name}: {option.value}
+                      </p>
+                    )
                 )}
                 {/* Trash icon shown only on mobile */}
                 <button
                   onClick={() => updateCartItem(item.merchandise.id, "delete")}
-                  className="mt-2 text-purple-400 hover:text-purple-600 self-start md:hidden"
+                  className="mt-2 text-gray-400 hover:text-gray-600 self-start md:hidden"
                   aria-label="Remove item"
                 >
                   <svg
