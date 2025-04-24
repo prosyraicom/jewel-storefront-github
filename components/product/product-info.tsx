@@ -9,7 +9,6 @@ import { ProductFeatures } from "./product-features";
 import { ProductPrice } from "./product-price";
 import { ProductRating } from "./product-rating";
 import { ProductTitle } from "./product-title";
-import { StickyAddToCart } from "./sticky-add-to-cart";
 import { UrgencyText } from "./urgency-text";
 import { VariantDropdown } from "./variant-dropdown";
 
@@ -52,7 +51,7 @@ export function ProductInfo({ product }: { product: Product }) {
       <ProductContent descriptionHtml={product.descriptionHtml} />
 
       {/* Sticky Add to Cart component */}
-      <StickyAddToCart product={product} addToCartRef={addToCartRef} />
+      {/* <StickyAddToCart product={product} addToCartRef={addToCartRef} /> */}
     </div>
   );
 }
