@@ -1,14 +1,23 @@
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useCart } from "./cart-context";
 
-export default function OpenCart({
-  className,
-  quantity,
-}: {
-  className?: string;
-  quantity?: number;
-}) {
+export default function OpenCart({ className }: { className?: string }) {
+  const { cart } = useCart();
+  const [totalQuantity, setTotalQuantity] = useState(0);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    if (cart?.lines) {
+      setTotalQuantity(
+        cart.lines.reduce((total, item) => total + item.quantity, 0) || 0
+      );
+    }
+  }, [cart]);
+
   return (
     <Link
       href="/cart"
@@ -21,9 +30,9 @@ export default function OpenCart({
         )}
       />
 
-      {quantity ? (
-        <div className="absolute right-0 top-0 -mr-2 -mt-2 h-4 w-4 rounded-sm bg-blue-600 text-[11px] font-medium text-white flex items-center justify-center">
-          {quantity}
+      {isClient && totalQuantity > 0 ? (
+        <div className="absolute right-0 bottom-0 -mr-2 -mb-2 h-4 w-4 rounded-full bg-[#23ae3b] text-[9px] font-medium text-white flex items-center justify-center">
+          {totalQuantity}
         </div>
       ) : null}
     </Link>
