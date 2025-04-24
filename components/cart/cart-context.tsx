@@ -11,7 +11,6 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useReducer,
   useState,
 } from "react";
 
@@ -234,61 +233,70 @@ function cartReducer(state: Cart, action: CartAction): Cart {
   }
 }
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
-  return (
-    <CartContext.Provider value={useCartState()}>
-      {children}
-    </CartContext.Provider>
-  );
-}
-
-function useCartState(): CartContextType {
-  // Client-side only state to prevent hydration issues
+export function CartProvider({
+  children,
+  cartPromise,
+}: {
+  children: React.ReactNode;
+  cartPromise: Promise<Cart | undefined>;
+}) {
+  const [cart, setCart] = useState<Cart | undefined>(undefined);
   const [isClient, setIsClient] = useState(false);
 
-  // Use regular reducer instead of useOptimistic
-  const [cart, dispatch] = useReducer(cartReducer, createEmptyCart());
-
-  // After hydration, set isClient to true and load from localStorage
   useEffect(() => {
     setIsClient(true);
-
-    // Load cart from localStorage after client-side render
-    const localCart = loadCartFromStorage();
-    if (localCart) {
-      dispatch({
-        type: "SET_CART",
-        payload: { cart: localCart },
-      });
-    }
   }, []);
 
-  // Save cart to localStorage whenever it changes
   useEffect(() => {
-    if (isClient && cart) {
-      saveCartToStorage(cart);
+    if (isClient) {
+      const localCart = loadCartFromStorage();
+      if (localCart) {
+        setCart(localCart);
+      } else {
+        cartPromise.then((serverCart) => {
+          if (serverCart) {
+            setCart(serverCart);
+            saveCartToStorage(serverCart);
+          }
+        });
+      }
     }
-  }, [cart, isClient]);
+  }, [isClient, cartPromise]);
 
   const updateCartItem = (merchandiseId: string, updateType: UpdateType) => {
-    dispatch({
+    if (!isClient || !cart) return;
+
+    const updatedCart = cartReducer(cart, {
       type: "UPDATE_ITEM",
       payload: { merchandiseId, updateType },
     });
+
+    setCart(updatedCart);
+    saveCartToStorage(updatedCart);
   };
 
   const addCartItem = (variant: ProductVariant, product: Product) => {
-    dispatch({ type: "ADD_ITEM", payload: { variant, product } });
+    if (!isClient || !cart) return;
+
+    const updatedCart = cartReducer(cart, {
+      type: "ADD_ITEM",
+      payload: { variant, product },
+    });
+
+    setCart(updatedCart);
+    saveCartToStorage(updatedCart);
   };
 
-  return useMemo(
+  const value = useMemo(
     () => ({
       cart,
       updateCartItem,
       addCartItem,
     }),
-    [cart]
+    [cart, isClient]
   );
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
 export function useCart() {
