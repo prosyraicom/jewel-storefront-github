@@ -35,20 +35,23 @@ function CartContent() {
   }
 
   return (
-    <div className="mx-auto max-w-[1400px] py-8 px-[15px] md:px-[50px]">
+    <div className="mx-auto max-w-[1400px] py-20 px-[15px] md:px-[50px]">
       {/* Cart Table */}
       <div className="mb-10">
         {/* Table Header */}
-        <div className="hidden md:grid md:grid-cols-3 text-sm font-medium uppercase tracking-wider border-b pb-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 text-[10px] font-light uppercase tracking-wider border-b pb-3">
           <div className="text-left">PRODUCT</div>
-          <div className="text-center">QUANTITY</div>
+          <div className="hidden md:block text-center">QUANTITY</div>
           <div className="text-right">TOTAL</div>
         </div>
 
         {/* Cart Items */}
         <div className="divide-y divide-gray-200">
           {cart.lines.map((item, i) => (
-            <div key={i} className="py-6 grid md:grid-cols-3 items-center">
+            <div
+              key={i}
+              className="py-6 grid grid-cols-2 md:grid-cols-3 items-center"
+            >
               {/* Product */}
               <div className="flex items-center space-x-4">
                 <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded border">
@@ -71,23 +74,47 @@ function CartContent() {
                       {item.merchandise.product.title}
                     </Link>
                   </div>
-                  {item.merchandise.title !== "Default Title" && (
-                    <p className="text-sm text-gray-500">
-                      {item.merchandise.title}
-                    </p>
-                  )}
-                  <div className="text-sm mt-1">
+                  <div className="text-sm text-gray-500 mt-1">
                     <Price
                       amount={item.cost.totalAmount.amount}
                       currencyCode={item.cost.totalAmount.currencyCode}
                       className="md:hidden"
                     />
                   </div>
+                  {item.merchandise.title !== "Default Title" && (
+                    <p className="text-sm text-gray-500">
+                      {item.merchandise.title}
+                    </p>
+                  )}
+                  <button
+                    onClick={() =>
+                      updateCartItem(item.merchandise.id, "delete")
+                    }
+                    className="mt-2 text-gray-400 hover:text-gray-600 md:hidden"
+                    aria-label="Remove item"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      aria-hidden="true"
+                      focusable="false"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        d="M14 3h-3.53a3.07 3.07 0 00-.6-1.65C9.44.82 8.8.5 8 .5s-1.44.32-1.87.85A3.06 3.06 0 005.53 3H2a.5.5 0 000 1h1.25v10c0 .28.22.5.5.5h8.5a.5.5 0 00.5-.5V4H14a.5.5 0 000-1zM6.91 1.98c.23-.29.58-.48 1.09-.48s.85.19 1.09.48c.2.24.3.6.36 1.02h-2.9c.05-.42.17-.78.36-1.02zm4.84 11.52h-7.5V4h7.5v9.5z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M6.55 5.25a.5.5 0 00-.5.5v6a.5.5 0 001 0v-6a.5.5 0 00-.5-.5zM9.45 5.25a.5.5 0 00-.5.5v6a.5.5 0 001 0v-6a.5.5 0 00-.5-.5z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </button>
                 </div>
               </div>
 
               {/* Quantity */}
-              <div className="flex items-center justify-center mt-4 md:mt-0">
+              <div className="hidden md:flex items-center justify-center">
                 <button
                   onClick={() => updateCartItem(item.merchandise.id, "delete")}
                   className="text-gray-400 hover:text-gray-600"
@@ -113,19 +140,12 @@ function CartContent() {
               </div>
 
               {/* Total */}
-              <div className="flex justify-between items-center mt-4 md:mt-0">
+              <div className="flex items-center justify-end">
                 <Price
-                  className="md:hidden"
+                  className="font-medium"
                   amount={item.cost.totalAmount.amount}
                   currencyCode={item.cost.totalAmount.currencyCode}
                 />
-                <div className="ml-auto">
-                  <Price
-                    className="hidden md:block font-medium"
-                    amount={item.cost.totalAmount.amount}
-                    currencyCode={item.cost.totalAmount.currencyCode}
-                  />
-                </div>
               </div>
             </div>
           ))}
@@ -135,7 +155,7 @@ function CartContent() {
       {/* Cart Footer */}
       <div className="border-t border-gray-200 pt-6">
         <div className="flex justify-start md:justify-end">
-          <div className="w-full md:w-72">
+          <div className="w-full md:w-[350px]">
             <div className="flex justify-between items-center mb-4">
               <span className="font-medium">Subtotal</span>
               <Price
@@ -147,7 +167,7 @@ function CartContent() {
 
             <Link
               href="/checkout"
-              className="flex items-center justify-center rounded bg-green-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-green-600"
+              className="flex items-center justify-center rounded bg-[#23ae3b] px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-green-600"
             >
               Check out
             </Link>
