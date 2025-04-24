@@ -35,10 +35,10 @@ export default function CartTable() {
   return (
     <div className="mb-10">
       {/* Table Header */}
-      <div className="grid grid-cols-2 md:grid-cols-5 text-xs font-medium uppercase tracking-wider border-b pb-3">
-        <div className="md:col-span-3 text-left">PRODUCT</div>
+      <div className="grid grid-cols-12 md:grid-cols-5 text-xs font-medium uppercase tracking-wider border-b pb-3">
+        <div className="col-span-9 md:col-span-3 text-left">PRODUCT</div>
         <div className="hidden md:block text-center">QUANTITY</div>
-        <div className="text-right">TOTAL</div>
+        <div className="col-span-3 md:col-span-1 text-right">TOTAL</div>
       </div>
 
       {/* Cart Items */}
@@ -46,10 +46,10 @@ export default function CartTable() {
         {cart.lines.map((item, i) => (
           <div
             key={i}
-            className="py-6 grid grid-cols-2 md:grid-cols-5 items-start md:items-center"
+            className="py-6 grid grid-cols-12 md:grid-cols-5 items-start md:items-center"
           >
-            {/* Product - Mobile: 2-column layout, Desktop: 5-column layout */}
-            <div className="md:col-span-3 flex items-start space-x-4">
+            {/* Product - Mobile: 9/12 columns, Desktop: 3/5 columns */}
+            <div className="col-span-9 md:col-span-3 flex items-start space-x-4">
               <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded">
                 <Image
                   src={item.merchandise.product.featuredImage.url}
@@ -61,8 +61,8 @@ export default function CartTable() {
                   className="object-cover"
                 />
               </div>
-              <div className="flex flex-col">
-                <div className="font-medium">
+              <div className="flex flex-col min-w-0">
+                <div className="font-medium line-clamp-2 pr-2">
                   <Link
                     href={`/product/${item.merchandise.product.handle}`}
                     className="hover:underline"
@@ -80,7 +80,10 @@ export default function CartTable() {
                 {item.merchandise.selectedOptions?.map(
                   (option, index) =>
                     option.value !== "Default Title" && (
-                      <p key={index} className="text-sm text-gray-500">
+                      <p
+                        key={index}
+                        className="text-sm text-gray-500 line-clamp-2"
+                      >
                         {option.name}: {option.value}
                       </p>
                     )
@@ -138,7 +141,7 @@ export default function CartTable() {
             </div>
 
             {/* Total - Visible on both mobile and desktop */}
-            <div className="flex items-center justify-end">
+            <div className="col-span-3 md:col-span-1 flex items-center justify-end">
               <Price
                 className="font-medium"
                 amount={item.cost.totalAmount.amount}
