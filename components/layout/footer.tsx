@@ -11,8 +11,8 @@ export default async function Footer() {
   const menu = await getMenu("next-js-frontend-footer-menu");
 
   return (
-    <footer className="footer color-background-1 border-t border-neutral-200 mt-10 pt-10 px-2 gradient section-padding animate-section">
-      <div className="footer__content-top page-width">
+    <footer className="footer color-background-1 border-t border-neutral-200 mt-10 gradient section-padding animate-section">
+      <div className="footer__content-top page-width  mx-auto max-w-[1400px] py-10 px-[15px] md:px-[50px]">
         <div className="footer__blocks-wrapper grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo Section */}
           <div className="footer-block">
