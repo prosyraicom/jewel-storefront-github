@@ -257,6 +257,11 @@ export function CartProvider({
           if (serverCart) {
             setCart(serverCart);
             saveCartToStorage(serverCart);
+          } else {
+            // Initialize with an empty cart if no server cart is available
+            const emptyCart = createEmptyCart();
+            setCart(emptyCart);
+            saveCartToStorage(emptyCart);
           }
         });
       }
@@ -276,7 +281,20 @@ export function CartProvider({
   };
 
   const addCartItem = (variant: ProductVariant, product: Product) => {
-    if (!isClient || !cart) return;
+    if (!isClient) return;
+
+    // Create an empty cart if no cart exists
+    if (!cart) {
+      const newCart = createEmptyCart();
+      const updatedCart = cartReducer(newCart, {
+        type: "ADD_ITEM",
+        payload: { variant, product },
+      });
+
+      setCart(updatedCart);
+      saveCartToStorage(updatedCart);
+      return;
+    }
 
     const updatedCart = cartReducer(cart, {
       type: "ADD_ITEM",
