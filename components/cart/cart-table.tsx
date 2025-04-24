@@ -35,9 +35,11 @@ export default function CartTable() {
   return (
     <div className="mb-10">
       {/* Table Header */}
-      <div className="grid grid-cols-12 md:grid-cols-5 text-xs font-medium uppercase tracking-wider border-b pb-3">
+      <div className="grid grid-cols-12 md:grid-cols-5 text-xs font-light uppercase tracking-wider border-b pb-5">
         <div className="col-span-9 md:col-span-3 text-left">PRODUCT</div>
-        <div className="hidden md:block text-center">QUANTITY</div>
+        <div className="hidden md:block md:col-span-1 text-center">
+          QUANTITY
+        </div>
         <div className="col-span-3 md:col-span-1 text-right">TOTAL</div>
       </div>
 
@@ -50,7 +52,7 @@ export default function CartTable() {
           >
             {/* Product - Mobile: 9/12 columns, Desktop: 3/5 columns */}
             <div className="col-span-9 md:col-span-3 flex items-start space-x-4">
-              <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded">
+              <div className="relative h-[100px] w-[100px] md:h-[120px] md:w-[120px] flex-shrink-0 overflow-hidden rounded">
                 <Image
                   src={item.merchandise.product.featuredImage.url}
                   alt={
@@ -62,7 +64,10 @@ export default function CartTable() {
                 />
               </div>
               <div className="flex flex-col min-w-0">
-                <div className="font-medium line-clamp-2 pr-2">
+                <div className="text-[10px] font-light uppercase mb-1">
+                  JEWEL
+                </div>
+                <div className="font-semibold text-lg line-clamp-4 pr-2">
                   <Link
                     href={`/product/${item.merchandise.product.handle}`}
                     className="hover:underline"
@@ -115,7 +120,7 @@ export default function CartTable() {
             </div>
 
             {/* Quantity - Only visible on desktop */}
-            <div className="hidden md:flex items-center justify-center">
+            <div className="hidden md:flex md:col-span-1 items-center justify-center">
               <button
                 onClick={() => updateCartItem(item.merchandise.id, "delete")}
                 className="text-gray-400 hover:text-gray-600"
@@ -143,7 +148,7 @@ export default function CartTable() {
             {/* Total - Visible on both mobile and desktop */}
             <div className="col-span-3 md:col-span-1 flex items-center justify-end">
               <Price
-                className="font-medium"
+                className="font-light"
                 amount={item.cost.totalAmount.amount}
                 currencyCode={item.cost.totalAmount.currencyCode}
               />

@@ -15,7 +15,7 @@ export default function CheckoutButton() {
     <div className="border-t border-gray-200 pt-6">
       <div className="flex justify-start md:justify-end">
         <div className="w-full md:w-[350px]">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex text-[21px] justify-between items-center mb-2">
             <span className="font-medium">Subtotal</span>
             <Price
               className="text-lg font-medium"
