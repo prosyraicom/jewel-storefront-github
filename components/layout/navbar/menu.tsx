@@ -13,15 +13,20 @@ interface MenuLinkProps {
   className?: string;
 }
 
-const MenuLink = ({ href, children, className = "" }: MenuLinkProps) => (
-  <Link
-    href={href}
-    className={`block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100 ${className}`}
-    style={{ letterSpacing: "1.4px" }}
-  >
-    {children}
-  </Link>
-);
+const MenuLink = ({ href, children, className = "" }: MenuLinkProps) => {
+  const isExternal = href.startsWith("http");
+  return (
+    <Link
+      href={href}
+      className={`block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100 ${className}`}
+      style={{ letterSpacing: "1.4px" }}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noreferrer noopener" : undefined}
+    >
+      {children}
+    </Link>
+  );
+};
 
 export default function NavbarMenu({
   menu = [],
@@ -48,15 +53,33 @@ export default function NavbarMenu({
                 ))
               ) : (
                 <>
-                  <MenuLink href="#">Become a Member</MenuLink>
-                  <MenuLink href="#">VIP Login</MenuLink>
-                  <MenuLink href="#">General FAQ</MenuLink>
-                  <MenuLink href="#">Shipping FAQ</MenuLink>
-                  <MenuLink href="#">Returns and Exchanges</MenuLink>
-                  <MenuLink href="#">Accssibility</MenuLink>
-                  <MenuLink href="#">Privacy Policy</MenuLink>
-                  <MenuLink href="#">Terms of Service</MenuLink>
-                  <MenuLink href="#">Track My Order</MenuLink>
+                  <MenuLink href="https://jewelshoppingco.com/products/homepage-membership">
+                    Become a Member
+                  </MenuLink>
+                  <MenuLink href="https://jewelcovip.com/login">
+                    VIP Login
+                  </MenuLink>
+                  <MenuLink href="https://jewelshoppingco.com/pages/general-faq">
+                    General FAQ
+                  </MenuLink>
+                  <MenuLink href="https://jewelshoppingco.com/pages/shipping-faq">
+                    Shipping FAQ
+                  </MenuLink>
+                  <MenuLink href="https://jewelshoppingco.com/pages/returns-exchanges">
+                    Returns & Exchanges
+                  </MenuLink>
+                  <MenuLink href="https://jewelshoppingco.com/pages/accessibility">
+                    Accessibility
+                  </MenuLink>
+                  <MenuLink href="https://jewelshoppingco.com/pages/privacy-policy">
+                    Privacy Policy
+                  </MenuLink>
+                  <MenuLink href="https://jewelshoppingco.com/pages/terms-of-service">
+                    Terms of Service
+                  </MenuLink>
+                  <MenuLink href="https://jewelshoppingco.com/tools/tracking">
+                    Track My Order
+                  </MenuLink>
                 </>
               )}
             </div>

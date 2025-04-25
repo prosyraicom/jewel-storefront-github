@@ -82,7 +82,7 @@ export default async function Footer() {
             <ul className="footer-block__details-content list-unstyled">
               <li className="mb-2">
                 <a
-                  href="/products/homepage-membership"
+                  href="https://jewelshoppingco.com/products/homepage-membership"
                   className="hover:text-neutral-700"
                 >
                   Become A Member
@@ -97,13 +97,16 @@ export default async function Footer() {
                 </a>
               </li>
               <li className="mb-2">
-                <a href="/pages/general-faq" className="hover:text-neutral-700">
+                <a
+                  href="https://jewelshoppingco.com/pages/general-faq"
+                  className="hover:text-neutral-700"
+                >
                   General FAQ
                 </a>
               </li>
               <li className="mb-2">
                 <a
-                  href="/pages/shipping-faq"
+                  href="https://jewelshoppingco.com/pages/shipping-faq"
                   className="hover:text-neutral-700"
                 >
                   Shipping FAQ
@@ -111,7 +114,7 @@ export default async function Footer() {
               </li>
               <li className="mb-2">
                 <a
-                  href="/pages/returns-exchanges"
+                  href="https://jewelshoppingco.com/pages/returns-exchanges"
                   className="hover:text-neutral-700"
                 >
                   Returns & Exchanges
@@ -119,7 +122,7 @@ export default async function Footer() {
               </li>
               <li className="mb-2">
                 <a
-                  href="/pages/accessibility"
+                  href="https://jewelshoppingco.com/pages/accessibility"
                   className="hover:text-neutral-700"
                 >
                   Accessibility
@@ -127,7 +130,7 @@ export default async function Footer() {
               </li>
               <li className="mb-2">
                 <a
-                  href="/pages/privacy-policy"
+                  href="https://jewelshoppingco.com/pages/privacy-policy"
                   className="hover:text-neutral-700"
                 >
                   Privacy Policy
@@ -135,7 +138,7 @@ export default async function Footer() {
               </li>
               <li className="mb-2">
                 <a
-                  href="/pages/terms-of-service"
+                  href="https://jewelshoppingco.com/pages/terms-of-service"
                   className="hover:text-neutral-700"
                 >
                   Terms of Service
