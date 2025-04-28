@@ -19,18 +19,19 @@ export async function getIPGeolocationData(): Promise<IPGeolocationData> {
     const vercelLatitude = headersList.get("x-vercel-ip-latitude") ?? "";
     const vercelLongitude = headersList.get("x-vercel-ip-longitude") ?? "";
 
-    const ip = forwardedFor ? forwardedFor.split(",")[0] : "127.0.0.1";
+    const resolvedIp = (
+      forwardedFor ? forwardedFor.split(",")[0] : "127.0.0.1"
+    ) as string;
 
     console.log("[Client IP API]", {
       vercelCountry,
       vercelCity,
       vercelLatitude,
       vercelLongitude,
-      ip,
+      ip: resolvedIp,
     });
-
     return {
-      ip,
+      ip: resolvedIp,
       country: vercelCountry || "unknown",
       region: "unknown", // Vercel doesn't provide region
       city: vercelCity || "unknown",
