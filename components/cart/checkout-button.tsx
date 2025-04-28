@@ -14,6 +14,18 @@ export default function CheckoutButton() {
     return null;
   }
 
+  const constructCheckoutUrl = () => {
+    const productParams = cart.lines
+      .map((item) => {
+        const productId = item.merchandise.product.id.split("/").pop(); // Get the last part after '/'
+        const variantId = item.merchandise.id.split("/").pop();
+        return `${productId}-${variantId}:${item.quantity}`;
+      })
+      .join("&");
+
+    return `https://www.jvipdeals.com/checkout/information/?products=${encodeURIComponent(productParams)}`;
+  };
+
   const handleCheckoutClick = () => {
     posthog.capture("checkout_initiated", {
       ...postHogBaseInfo,
@@ -45,7 +57,7 @@ export default function CheckoutButton() {
           </div>
 
           <Link
-            href="/checkout"
+            href={constructCheckoutUrl()}
             className="flex items-center justify-center rounded bg-[#23ae3b] px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-green-600"
             onClick={handleCheckoutClick}
           >
