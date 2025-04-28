@@ -1,6 +1,10 @@
+"use client";
+
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+import { usePostHog } from "components/posthog-context";
 import Link from "next/link";
+import posthog from "posthog-js";
 import { useEffect, useState } from "react";
 import { useCart } from "./cart-context";
 
@@ -8,6 +12,7 @@ export default function OpenCart({ className }: { className?: string }) {
   const { cart } = useCart();
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [isClient, setIsClient] = useState(false);
+  const { postHogBaseInfo } = usePostHog();
 
   useEffect(() => {
     setIsClient(true);
@@ -18,10 +23,20 @@ export default function OpenCart({ className }: { className?: string }) {
     }
   }, [cart]);
 
+  const handleCartClick = () => {
+    posthog.capture("cart_opened", {
+      ...postHogBaseInfo,
+      cart_items_count: totalQuantity,
+      cart_total: cart?.cost?.totalAmount?.amount,
+      cart_currency: cart?.cost?.totalAmount?.currencyCode,
+    });
+  };
+
   return (
     <Link
       href="/cart"
       className="relative flex h-7 w-7 items-center justify-center text-black transition-colors dark:border-neutral-700 dark:text-white"
+      onClick={handleCartClick}
     >
       <ShoppingBagIcon
         className={clsx(

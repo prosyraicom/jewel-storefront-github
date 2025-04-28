@@ -1,3 +1,5 @@
+import { headers } from "next/headers";
+
 export interface IPGeolocationData {
   ip: string;
   country: string;
@@ -10,23 +12,34 @@ export interface IPGeolocationData {
 
 export async function getIPGeolocationData(): Promise<IPGeolocationData> {
   try {
-    const response = await fetch("https://ipapi.co/json/");
-    if (!response.ok) {
-      throw new Error("Failed to fetch IP data");
-    }
-    const data = await response.json();
+    const headersList = await headers();
+    const forwardedFor = headersList.get("x-forwarded-for") ?? "";
+    const vercelCountry = headersList.get("x-vercel-ip-country") ?? "";
+    const vercelCity = headersList.get("x-vercel-ip-city") ?? "";
+    const vercelLatitude = headersList.get("x-vercel-ip-latitude") ?? "";
+    const vercelLongitude = headersList.get("x-vercel-ip-longitude") ?? "";
+
+    const ip = forwardedFor ? forwardedFor.split(",")[0] : "127.0.0.1";
+
+    console.log("[Client IP API]", {
+      vercelCountry,
+      vercelCity,
+      vercelLatitude,
+      vercelLongitude,
+      ip,
+    });
 
     return {
-      ip: data.ip,
-      country: data.country_name,
-      region: data.region,
-      city: data.city,
-      latitude: data.latitude,
-      longitude: data.longitude,
-      timezone: data.timezone,
+      ip,
+      country: vercelCountry || "unknown",
+      region: "unknown", // Vercel doesn't provide region
+      city: vercelCity || "unknown",
+      latitude: vercelLatitude ? parseFloat(vercelLatitude) : 0,
+      longitude: vercelLongitude ? parseFloat(vercelLongitude) : 0,
+      timezone: "UTC", // Vercel doesn't provide timezone
     };
   } catch (error) {
-    console.error("Error fetching IP data:", error);
+    console.error("Error getting IP data:", error);
     return {
       ip: "unknown",
       country: "unknown",
@@ -38,3 +51,8 @@ export async function getIPGeolocationData(): Promise<IPGeolocationData> {
     };
   }
 }
+
+export const isBlacklistedCountry = (countryCode: string): boolean => {
+  const blacklistedCountries: string[] = [];
+  return blacklistedCountries.includes(countryCode);
+};
