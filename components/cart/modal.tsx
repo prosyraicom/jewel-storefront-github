@@ -4,11 +4,13 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ShoppingCartIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import LoadingDots from "components/loading-dots";
+import { usePostHog } from "components/posthog-context";
 import Price from "components/price";
 import { DEFAULT_OPTION } from "lib/constants";
 import { createUrl } from "lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import posthog from "posthog-js";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { createCartAndSetCookie, redirectToCheckout } from "./actions";
@@ -25,8 +27,27 @@ export default function CartModal() {
   const { cart, updateCartItem } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const quantityRef = useRef(cart?.totalQuantity);
-  const openCart = () => setIsOpen(true);
-  const closeCart = () => setIsOpen(false);
+  const { postHogBaseInfo } = usePostHog();
+
+  const openCart = () => {
+    setIsOpen(true);
+    posthog.capture("cart_modal_opened", {
+      ...postHogBaseInfo,
+      cart_items_count: cart?.totalQuantity || 0,
+      cart_total: cart?.cost?.totalAmount?.amount || "0",
+      cart_currency: cart?.cost?.totalAmount?.currencyCode || "USD",
+    });
+  };
+
+  const closeCart = () => {
+    setIsOpen(false);
+    posthog.capture("cart_modal_closed", {
+      ...postHogBaseInfo,
+      cart_items_count: cart?.totalQuantity || 0,
+      cart_total: cart?.cost?.totalAmount?.amount || "0",
+      cart_currency: cart?.cost?.totalAmount?.currencyCode || "USD",
+    });
+  };
 
   useEffect(() => {
     if (!cart) {

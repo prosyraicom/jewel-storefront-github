@@ -1,11 +1,13 @@
 "use client";
 
+import { usePostHog } from "components/posthog-context";
 import type {
   Cart,
   CartItem,
   Product,
   ProductVariant,
 } from "lib/shopify/types";
+import posthog from "posthog-js";
 import React, {
   createContext,
   useContext,
@@ -242,6 +244,7 @@ export function CartProvider({
 }) {
   const [cart, setCart] = useState<Cart | undefined>(undefined);
   const [isClient, setIsClient] = useState(false);
+  const { postHogBaseInfo } = usePostHog();
 
   useEffect(() => {
     setIsClient(true);
@@ -271,6 +274,11 @@ export function CartProvider({
   const updateCartItem = (merchandiseId: string, updateType: UpdateType) => {
     if (!isClient || !cart) return;
 
+    const item = cart.lines.find(
+      (item) => item.merchandise.id === merchandiseId
+    );
+    if (!item) return;
+
     const updatedCart = cartReducer(cart, {
       type: "UPDATE_ITEM",
       payload: { merchandiseId, updateType },
@@ -278,6 +286,18 @@ export function CartProvider({
 
     setCart(updatedCart);
     saveCartToStorage(updatedCart);
+
+    // Track cart item update
+    posthog.capture("cart_item_updated", {
+      ...postHogBaseInfo,
+      update_type: updateType,
+      product_id: item.merchandise.product.id,
+      product_title: item.merchandise.product.title,
+      variant_id: item.merchandise.id,
+      quantity: item.quantity,
+      price: item.cost.totalAmount.amount,
+      currency: item.cost.totalAmount.currencyCode,
+    });
   };
 
   const addCartItem = (variant: ProductVariant, product: Product) => {
@@ -293,6 +313,16 @@ export function CartProvider({
 
       setCart(updatedCart);
       saveCartToStorage(updatedCart);
+
+      // Track new cart creation and item addition
+      posthog.capture("cart_created", {
+        ...postHogBaseInfo,
+        product_id: product.id,
+        product_title: product.title,
+        variant_id: variant.id,
+        price: variant.price.amount,
+        currency: variant.price.currencyCode,
+      });
       return;
     }
 
@@ -303,6 +333,19 @@ export function CartProvider({
 
     setCart(updatedCart);
     saveCartToStorage(updatedCart);
+
+    // Track cart item addition
+    posthog.capture("cart_item_added", {
+      ...postHogBaseInfo,
+      product_id: product.id,
+      product_title: product.title,
+      variant_id: variant.id,
+      price: variant.price.amount,
+      currency: variant.price.currencyCode,
+      cart_total: updatedCart.cost.totalAmount.amount,
+      cart_currency: updatedCart.cost.totalAmount.currencyCode,
+      cart_items_count: updatedCart.totalQuantity,
+    });
   };
 
   const value = useMemo(

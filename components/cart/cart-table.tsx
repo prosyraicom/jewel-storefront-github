@@ -1,18 +1,37 @@
 "use client";
 
 import { useCart } from "components/cart/cart-context";
+import { usePostHog } from "components/posthog-context";
 import Price from "components/price";
 import Image from "next/image";
 import Link from "next/link";
+import posthog from "posthog-js";
 import { useEffect, useState } from "react";
 
 export default function CartTable() {
   const { cart, updateCartItem } = useCart();
   const [isClient, setIsClient] = useState(false);
+  const { postHogBaseInfo } = usePostHog();
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    if (cart) {
+      posthog.capture("cart_page_viewed", {
+        ...postHogBaseInfo,
+        cart_items_count: cart.totalQuantity,
+        cart_total: cart.cost.totalAmount.amount,
+        cart_currency: cart.cost.totalAmount.currencyCode,
+        cart_items: cart.lines.map((item) => ({
+          product_id: item.merchandise.product.id,
+          product_title: item.merchandise.product.title,
+          variant_id: item.merchandise.id,
+          quantity: item.quantity,
+          price: item.cost.totalAmount.amount,
+          currency: item.cost.totalAmount.currencyCode,
+        })),
+      });
+    }
+  }, [cart, postHogBaseInfo]);
 
   if (!isClient) {
     return <CartTableLoading />;
@@ -25,6 +44,11 @@ export default function CartTable() {
         <Link
           href="/"
           className="rounded-md bg-blue-600 px-6 py-3 text-white hover:bg-blue-700"
+          onClick={() => {
+            posthog.capture("empty_cart_continue_shopping_clicked", {
+              ...postHogBaseInfo,
+            });
+          }}
         >
           Continue Shopping
         </Link>
