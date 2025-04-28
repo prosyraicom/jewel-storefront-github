@@ -1,9 +1,9 @@
 "use client";
 
 import { useCart } from "components/cart/cart-context";
+import { PreservedLink } from "components/common/preserved-link";
 import { usePostHog } from "components/posthog-context";
 import Price from "components/price";
-import Link from "next/link";
 import posthog from "posthog-js";
 
 export default function CheckoutButton() {
@@ -56,13 +56,13 @@ export default function CheckoutButton() {
             />
           </div>
 
-          <Link
+          <PreservedLink
             href={constructCheckoutUrl()}
             className="flex items-center justify-center rounded bg-[#23ae3b] px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-green-600"
             onClick={handleCheckoutClick}
           >
             Check out
-          </Link>
+          </PreservedLink>
         </div>
       </div>
     </div>

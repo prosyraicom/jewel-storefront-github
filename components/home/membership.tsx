@@ -9,7 +9,7 @@ type VipMembershipProps = {
 
 export default function VipMembership({
   price = "$29.95/month",
-  membershipLink = "/membership",
+  membershipLink = "https://jewelshoppingco.com/products/homepage-membership",
 }: VipMembershipProps) {
   return (
     <div className="w-full bg-white py-8">
