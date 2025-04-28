@@ -1,6 +1,9 @@
 import { CartProvider } from "components/cart/cart-context";
 import { Navbar } from "components/layout/navbar";
+import { PostHogContextProvider } from "components/posthog-context";
 import { WelcomeToast } from "components/welcome-toast";
+import { PostHogProviderClient } from "lib/posthog";
+import { getPublicData } from "lib/posthog-base-info";
 import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
 import { Jost } from "next/font/google";
@@ -33,8 +36,37 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  // Don't await the fetch, pass the Promise to the context provider
   const cart = getCart();
+
+  // Get public data for PostHog
+  const publicData = await getPublicData();
+
+  const postHogBaseInfo = {
+    distinctId: `anonymous_${Math.random().toString(36).substring(2, 15)}`,
+    currentPath: typeof window !== "undefined" ? window.location.pathname : "/",
+    referrer: typeof document !== "undefined" ? document.referrer : "",
+    userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "",
+    screenResolution:
+      typeof window !== "undefined"
+        ? `${window.screen.width}x${window.screen.height}`
+        : "0x0",
+    language: typeof navigator !== "undefined" ? navigator.language : "en",
+    timezone: publicData.timezone || "UTC",
+    deviceType:
+      typeof navigator !== "undefined" &&
+      /Mobile|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+        ? "mobile"
+        : "desktop",
+    browser: "Unknown",
+    os: "Unknown",
+    ip: publicData.ip || "unknown",
+    country: publicData.country || "unknown",
+    region: publicData.region || "unknown",
+    city: publicData.city || "unknown",
+    latitude: publicData.latitude || 0,
+    longitude: publicData.longitude || 0,
+    cartItems: [], // Will be populated by cart context
+  };
 
   return (
     <html lang="en" className={`${jost.className}`}>
@@ -46,14 +78,18 @@ export default async function RootLayout({
       </head>
       {/* <body className="bg-neutral-50 text-black selection:bg-teal-300 dark:bg-neutral-900 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white"> */}
       <body className="bg-white text-black selection:bg-teal-300">
-        <CartProvider cartPromise={cart}>
-          <Navbar />
-          <main>
-            {children}
-            <Toaster closeButton />
-            <WelcomeToast />
-          </main>
-        </CartProvider>
+        <PostHogProviderClient>
+          <PostHogContextProvider postHogBaseInfo={postHogBaseInfo}>
+            <CartProvider cartPromise={cart}>
+              <Navbar />
+              <main>
+                {children}
+                <Toaster closeButton />
+                <WelcomeToast />
+              </main>
+            </CartProvider>
+          </PostHogContextProvider>
+        </PostHogProviderClient>
       </body>
     </html>
   );
