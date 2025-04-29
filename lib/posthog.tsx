@@ -58,6 +58,14 @@ if (typeof window !== "undefined") {
         isIdentifiedID: false,
       },
     });
+
+    // Register global properties
+    posthog.register({
+      environment: environment,
+      app: "storefront",
+      app_version: process.env.NEXT_PUBLIC_APP_VERSION || "1.0.0",
+      deployment: process.env.NEXT_PUBLIC_VERCEL_ENV || "unknown",
+    });
   } catch (error) {
     console.error("PostHog initialization error occurred");
   }

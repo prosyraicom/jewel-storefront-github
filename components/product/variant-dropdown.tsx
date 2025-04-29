@@ -57,6 +57,7 @@ export function VariantDropdown({
       option_name: optionName,
       option_value: value,
       product_id: variants[0]?.id,
+      product_title: variants[0]?.title,
       is_available: combinations.some(
         (combination) =>
           combination[optionName.toLowerCase()] === value &&
