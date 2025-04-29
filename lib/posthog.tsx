@@ -3,13 +3,35 @@
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 
+// Helper to determine the actual environment
+function getEnvironment() {
+  // Check if we're in a Vercel preview deployment
+  if (
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
+    process.env.VERCEL_ENV === "preview" ||
+    // Check if the URL contains vercel preview domain
+    (typeof window !== "undefined" &&
+      window.location.hostname.includes("vercel.app"))
+  ) {
+    return "preview";
+  }
+
+  if (process.env.NODE_ENV === "development") {
+    return "development";
+  }
+
+  return process.env.NODE_ENV || "production";
+}
+
 if (typeof window !== "undefined") {
   try {
+    const environment = getEnvironment();
+
     // Only log presence/absence of required config
     console.log("PostHog initialization status:", {
       hasKey: !!process.env.NEXT_PUBLIC_POSTHOG_KEY,
       hasHost: !!process.env.NEXT_PUBLIC_POSTHOG_HOST,
-      environment: process.env.NODE_ENV,
+      environment,
     });
 
     if (
@@ -25,8 +47,9 @@ if (typeof window !== "undefined") {
       api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
       person_profiles: "identified_only",
       loaded: (posthog) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log("PostHog initialized in development mode");
+        // Enable debug mode in development or preview
+        if (environment !== "production") {
+          console.log(`PostHog initialized in ${environment} mode`);
           posthog.debug();
         }
       },
@@ -48,7 +71,11 @@ export function PostHogProviderClient({
   if (typeof window !== "undefined") {
     try {
       const isPostHogLoaded = posthog.__loaded;
-      console.log("PostHog status:", isPostHogLoaded ? "Active" : "Inactive");
+      const environment = getEnvironment();
+      console.log(
+        `PostHog status (${environment}):`,
+        isPostHogLoaded ? "Active" : "Inactive"
+      );
     } catch (error) {
       console.error("PostHog provider error occurred");
     }
