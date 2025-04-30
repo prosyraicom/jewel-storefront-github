@@ -72,9 +72,9 @@ export default function NavbarMenu({
           className="p-2 -ml-2 transition-colors hover:text-blue-600"
           onClick={handleMenuClick}
         >
-          <button className="relative flex h-7 w-7 items-center justify-center text-black transition-colors dark:border-neutral-700 dark:text-white">
-            <Bars3Icon className="h-6" />
-          </button>
+          {/* <button className="relative flex h-7 w-7 items-center justify-center text-black transition-colors dark:border-neutral-700 dark:text-white"> */}
+          <Bars3Icon className="h-6" />
+          {/* </button> */}
           <span className="sr-only">Menu</span>
         </SheetTrigger>
         <SheetContent side="left" className="w-[300px] sm:w-[350px] py-8">
