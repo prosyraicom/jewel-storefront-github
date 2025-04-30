@@ -22,7 +22,7 @@ export default async function Footer() {
                 style={{ maxWidth: "min(100%, 550px)" }}
               >
                 <img
-                  src="/main-jewel-logo-black.svg"
+                  src="/jewel_secure.webp"
                   alt="Jewel Logo"
                   loading="lazy"
                   width="1080"

@@ -26,7 +26,7 @@ export function ProductFeatures() {
   ];
 
   return (
-    <div className="py-3 border-t border-gray-200">
+    <div className="py-3">
       <ul className="flex justify-around max-w-md mx-auto">
         {features.map((feature, index) => (
           <li
