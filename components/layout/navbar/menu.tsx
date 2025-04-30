@@ -14,6 +14,7 @@ interface MenuLinkProps {
   children: React.ReactNode;
   className?: string;
   menuType?: string;
+  setIsOpen?: (isOpen: boolean) => void;
 }
 
 const MenuLink = ({
@@ -21,6 +22,7 @@ const MenuLink = ({
   children,
   className = "",
   menuType = "default",
+  setIsOpen,
 }: MenuLinkProps) => {
   const isExternal = href.startsWith("http");
   const { postHogBaseInfo } = usePostHog();
@@ -34,6 +36,9 @@ const MenuLink = ({
       menu_type: menuType,
       menu_section: "main_menu",
     });
+    if (setIsOpen) {
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -54,27 +59,24 @@ export default function NavbarMenu({
   menu?: { title: string; path: string }[];
 }) {
   const { postHogBaseInfo } = usePostHog();
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleMenuClick = () => {
     posthog.capture("menu_opened", {
       ...postHogBaseInfo,
-      menu_state: isOpen ? "closed" : "opened",
+      menu_state: open ? "closed" : "opened",
     });
-    setIsOpen(!isOpen);
   };
 
   return (
     <div className="flex items-center justify-between px-[15px] py-[10px] md:px-[50px] py-4 w-full max-w-[1400px] mx-auto">
       {/* Left side - Burger Menu */}
-      <Sheet>
+      <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger
           className="p-2 -ml-2 transition-colors hover:text-blue-600"
           onClick={handleMenuClick}
         >
-          {/* <button className="relative flex h-7 w-7 items-center justify-center text-black transition-colors dark:border-neutral-700 dark:text-white"> */}
           <Bars3Icon className="h-6" />
-          {/* </button> */}
           <span className="sr-only">Menu</span>
         </SheetTrigger>
         <SheetContent side="left" className="w-[300px] sm:w-[350px] py-8">
@@ -83,67 +85,191 @@ export default function NavbarMenu({
             <div className="space-y-1">
               {menu.length > 0 ? (
                 menu.map((item) => (
-                  <MenuLink
+                  <Link
                     key={item.path}
                     href={item.path}
-                    menuType="navigation"
+                    className="block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100"
+                    style={{ letterSpacing: "1.4px" }}
+                    onClick={() => {
+                      posthog.capture("menu_link_clicked", {
+                        ...postHogBaseInfo,
+                        link_text: item.title,
+                        link_url: item.path,
+                        is_external: false,
+                        menu_type: "navigation",
+                        menu_section: "main_menu",
+                      });
+                      setOpen(false);
+                    }}
                   >
                     {item.title}
-                  </MenuLink>
+                  </Link>
                 ))
               ) : (
                 <>
-                  <MenuLink
+                  <Link
                     href="https://jewelshoppingco.com/products/homepage-membership"
-                    menuType="membership"
+                    className="block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100"
+                    style={{ letterSpacing: "1.4px" }}
+                    onClick={() => {
+                      posthog.capture("menu_link_clicked", {
+                        ...postHogBaseInfo,
+                        link_text: "Become a Member",
+                        link_url:
+                          "https://jewelshoppingco.com/products/homepage-membership",
+                        is_external: true,
+                        menu_type: "membership",
+                        menu_section: "main_menu",
+                      });
+                      setOpen(false);
+                    }}
                   >
                     Become a Member
-                  </MenuLink>
-                  <MenuLink href="https://jewelcovip.com/login" menuType="vip">
+                  </Link>
+                  <Link
+                    href="https://jewelcovip.com/login"
+                    className="block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100"
+                    style={{ letterSpacing: "1.4px" }}
+                    onClick={() => {
+                      posthog.capture("menu_link_clicked", {
+                        ...postHogBaseInfo,
+                        link_text: "VIP Login",
+                        link_url: "https://jewelcovip.com/login",
+                        is_external: true,
+                        menu_type: "vip",
+                        menu_section: "main_menu",
+                      });
+                      setOpen(false);
+                    }}
+                  >
                     VIP Login
-                  </MenuLink>
-                  <MenuLink
-                    href="https://jewelshoppingco.com/pages/general-faq"
-                    menuType="faq"
+                  </Link>
+                  <Link
+                    href="/general-faqs"
+                    className="block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100"
+                    style={{ letterSpacing: "1.4px" }}
+                    onClick={() => {
+                      posthog.capture("menu_link_clicked", {
+                        ...postHogBaseInfo,
+                        link_text: "General FAQs",
+                        link_url: "/general-faqs",
+                        is_external: false,
+                        menu_type: "faqs",
+                        menu_section: "main_menu",
+                      });
+                      setOpen(false);
+                    }}
                   >
-                    General FAQ
-                  </MenuLink>
-                  <MenuLink
-                    href="https://jewelshoppingco.com/pages/shipping-faq"
-                    menuType="shipping"
+                    General FAQs
+                  </Link>
+                  <Link
+                    href="/shipping-faqs"
+                    className="block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100"
+                    style={{ letterSpacing: "1.4px" }}
+                    onClick={() => {
+                      posthog.capture("menu_link_clicked", {
+                        ...postHogBaseInfo,
+                        link_text: "Shipping FAQs",
+                        link_url: "/shipping-faqs",
+                        is_external: false,
+                        menu_type: "shipping faqs",
+                        menu_section: "main_menu",
+                      });
+                      setOpen(false);
+                    }}
                   >
-                    Shipping FAQ
-                  </MenuLink>
-                  <MenuLink
-                    href="https://jewelshoppingco.com/pages/returns-exchanges"
-                    menuType="returns"
+                    Shipping FAQs
+                  </Link>
+                  <Link
+                    href="/returns-and-exchanges"
+                    className="block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100"
+                    style={{ letterSpacing: "1.4px" }}
+                    onClick={() => {
+                      posthog.capture("menu_link_clicked", {
+                        ...postHogBaseInfo,
+                        link_text: "Returns & Exchanges",
+                        link_url: "/returns-and-exchanges",
+                        is_external: false,
+                        menu_type: "returns",
+                        menu_section: "main_menu",
+                      });
+                      setOpen(false);
+                    }}
                   >
                     Returns & Exchanges
-                  </MenuLink>
-                  <MenuLink
-                    href="https://jewelshoppingco.com/pages/accessibility"
-                    menuType="accessibility"
+                  </Link>
+                  <Link
+                    href="/accessibility"
+                    className="block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100"
+                    style={{ letterSpacing: "1.4px" }}
+                    onClick={() => {
+                      posthog.capture("menu_link_clicked", {
+                        ...postHogBaseInfo,
+                        link_text: "Accessibility",
+                        link_url: "/accessibility",
+                        is_external: false,
+                        menu_type: "accessibility",
+                        menu_section: "main_menu",
+                      });
+                      setOpen(false);
+                    }}
                   >
                     Accessibility
-                  </MenuLink>
-                  <MenuLink
-                    href="https://jewelshoppingco.com/pages/privacy-policy"
-                    menuType="legal"
+                  </Link>
+                  <Link
+                    href="/privacy-policy"
+                    className="block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100"
+                    style={{ letterSpacing: "1.4px" }}
+                    onClick={() => {
+                      posthog.capture("menu_link_clicked", {
+                        ...postHogBaseInfo,
+                        link_text: "Privacy Policy",
+                        link_url: "/privacy-policy",
+                        is_external: false,
+                        menu_type: "legal",
+                        menu_section: "main_menu",
+                      });
+                      setOpen(false);
+                    }}
                   >
                     Privacy Policy
-                  </MenuLink>
-                  <MenuLink
-                    href="https://jewelshoppingco.com/pages/terms-of-service"
-                    menuType="legal"
+                  </Link>
+                  <Link
+                    href="/terms-of-service"
+                    className="block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100"
+                    style={{ letterSpacing: "1.4px" }}
+                    onClick={() => {
+                      posthog.capture("menu_link_clicked", {
+                        ...postHogBaseInfo,
+                        link_text: "Terms of Service",
+                        link_url: "/terms-of-service",
+                        is_external: false,
+                        menu_type: "legal",
+                        menu_section: "main_menu",
+                      });
+                      setOpen(false);
+                    }}
                   >
                     Terms of Service
-                  </MenuLink>
-                  <MenuLink
-                    href="https://jewelshoppingco.com/tools/tracking"
-                    menuType="tracking"
+                  </Link>
+                  <Link
+                    href="/track"
+                    className="block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100"
+                    style={{ letterSpacing: "1.4px" }}
+                    onClick={() => {
+                      posthog.capture("menu_link_clicked", {
+                        ...postHogBaseInfo,
+                        link_text: "Track My Order",
+                        link_url: "/track",
+                        is_external: false,
+                        menu_type: "tracking",
+                        menu_section: "main_menu",
+                      });
+                      setOpen(false);
+                    }}
                   >
                     Track My Order
-                  </MenuLink>
+                  </Link>
                 </>
               )}
             </div>

@@ -97,58 +97,40 @@ export default async function Footer() {
                 </a>
               </li>
               <li className="mb-2">
-                <a
-                  href="https://jewelshoppingco.com/pages/general-faq"
-                  className="hover:text-neutral-700"
-                >
-                  General FAQ
+                <a href="/general-faqs" className="hover:text-neutral-700">
+                  General FAQs
+                </a>
+              </li>
+              <li className="mb-2">
+                <a href="/shipping-faqs" className="hover:text-neutral-700">
+                  Shipping FAQs
                 </a>
               </li>
               <li className="mb-2">
                 <a
-                  href="https://jewelshoppingco.com/pages/shipping-faq"
-                  className="hover:text-neutral-700"
-                >
-                  Shipping FAQ
-                </a>
-              </li>
-              <li className="mb-2">
-                <a
-                  href="https://jewelshoppingco.com/pages/returns-exchanges"
+                  href="/returns-and-exchanges"
                   className="hover:text-neutral-700"
                 >
                   Returns & Exchanges
                 </a>
               </li>
               <li className="mb-2">
-                <a
-                  href="https://jewelshoppingco.com/pages/accessibility"
-                  className="hover:text-neutral-700"
-                >
+                <a href="/accessibility" className="hover:text-neutral-700">
                   Accessibility
                 </a>
               </li>
               <li className="mb-2">
-                <a
-                  href="https://jewelshoppingco.com/pages/privacy-policy"
-                  className="hover:text-neutral-700"
-                >
+                <a href="/privacy-policy" className="hover:text-neutral-700">
                   Privacy Policy
                 </a>
               </li>
               <li className="mb-2">
-                <a
-                  href="https://jewelshoppingco.com/pages/terms-of-service"
-                  className="hover:text-neutral-700"
-                >
+                <a href="/terms-of-service" className="hover:text-neutral-700">
                   Terms of Service
                 </a>
               </li>
               <li className="mb-2">
-                <a
-                  href="https://jewelshoppingco.com/tools/tracking"
-                  className="hover:text-neutral-700"
-                >
+                <a href="/track" className="hover:text-neutral-700">
                   Track My Order
                 </a>
               </li>
