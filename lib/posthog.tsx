@@ -3,6 +3,11 @@
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 
+// Function to generate a UUID v4
+function generateUUID() {
+  return Date.now().toString(36) + Math.random().toString(36).substring(2);
+}
+
 // Helper to determine the actual environment
 function getEnvironment() {
   // Check if we're in a Vercel preview deployment
@@ -54,7 +59,7 @@ if (typeof window !== "undefined") {
         }
       },
       bootstrap: {
-        distinctID: "debug-session",
+        distinctID: generateUUID(),
         isIdentifiedID: false,
       },
     });

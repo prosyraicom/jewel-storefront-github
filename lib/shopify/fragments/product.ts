@@ -1,5 +1,5 @@
-import imageFragment from './image';
-import seoFragment from './seo';
+import imageFragment from "./image";
+import seoFragment from "./seo";
 
 const productFragment = /* GraphQL */ `
   fragment product on Product {
@@ -24,6 +24,16 @@ const productFragment = /* GraphQL */ `
         currencyCode
       }
     }
+    compareAtPriceRange {
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
     variants(first: 250) {
       edges {
         node {
@@ -35,6 +45,10 @@ const productFragment = /* GraphQL */ `
             value
           }
           price {
+            amount
+            currencyCode
+          }
+          compareAtPrice {
             amount
             currencyCode
           }

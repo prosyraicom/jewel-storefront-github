@@ -19,10 +19,8 @@ export function ProductInfo({ product }: { product: Product }) {
 
   // Mock compareAtPrice for demonstration purposes
   const compareAtPrice = {
-    amount: (
-      parseFloat(product.priceRange.maxVariantPrice.amount) * 1.2
-    ).toString(),
-    currencyCode: product.priceRange.maxVariantPrice.currencyCode,
+    amount: parseFloat(product.compareAtPriceRange.maxVariantPrice.amount),
+    currencyCode: product.compareAtPriceRange.maxVariantPrice.currencyCode,
   };
 
   return (
@@ -31,8 +29,14 @@ export function ProductInfo({ product }: { product: Product }) {
       <ProductTitle title={product.title} />
       <ProductRating />
       <ProductPrice
-        price={product.priceRange.maxVariantPrice}
-        compareAtPrice={compareAtPrice}
+        price={{
+          amount: product.priceRange.maxVariantPrice.amount.toString(),
+          currencyCode: product.priceRange.maxVariantPrice.currencyCode,
+        }}
+        compareAtPrice={{
+          amount: compareAtPrice.amount.toString(),
+          currencyCode: compareAtPrice.currencyCode,
+        }}
       />
       <VariantDropdown options={product.options} variants={product.variants} />
 
