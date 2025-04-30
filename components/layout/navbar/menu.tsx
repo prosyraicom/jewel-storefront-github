@@ -41,8 +41,6 @@ const MenuLink = ({
       href={href}
       className={`block px-5 py-[4.5px] text-lg text-[19px] font-light hover:bg-gray-100 ${className}`}
       style={{ letterSpacing: "1.4px" }}
-      target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noreferrer noopener" : undefined}
       onClick={handleClick}
     >
       {children}

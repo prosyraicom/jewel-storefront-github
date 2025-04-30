@@ -43,7 +43,7 @@ export default function CartTable() {
         <h2 className="text-2xl font-bold">Your cart is empty</h2>
         <Link
           href="/"
-          className="rounded-md bg-blue-600 px-6 py-3 text-white hover:bg-blue-700"
+          className="rounded-md bg-[#23ae3b] px-6 py-3 text-white hover:bg-blue-700"
           onClick={() => {
             posthog.capture("empty_cart_continue_shopping_clicked", {
               ...postHogBaseInfo,
