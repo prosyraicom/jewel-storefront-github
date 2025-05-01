@@ -5,7 +5,7 @@ import { useProduct, useUpdateURL } from "components/product/product-context";
 import { ProductOption, ProductVariant } from "lib/shopify/types";
 import { useRouter } from "next/navigation";
 import posthog from "posthog-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Combination = {
   id: string;
@@ -33,6 +33,26 @@ export function VariantDropdown({
   if (hasNoOptionsOrJustOneOption) {
     return null;
   }
+
+  // Preselect the first available variant if no variant is selected
+  useEffect(() => {
+    const firstOption = options[0];
+    if (firstOption && !state[firstOption.name.toLowerCase()]) {
+      const firstAvailableValue = firstOption.values.find((value) =>
+        combinations.some(
+          (combination) =>
+            combination[firstOption.name.toLowerCase()] === value &&
+            combination.availableForSale
+        )
+      );
+      if (firstAvailableValue) {
+        handleVariantSelect(
+          firstOption.name.toLowerCase(),
+          firstAvailableValue
+        );
+      }
+    }
+  }, [options]);
 
   const combinations: Combination[] = variants.map((variant) => ({
     id: variant.id,
@@ -72,7 +92,12 @@ export function VariantDropdown({
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center justify-between rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900 z-10"
       >
-        <span>Select {options[0]?.name}</span>
+        <span>
+          {options[0]
+            ? state[options[0].name.toLowerCase()] ||
+              `Select ${options[0].name}`
+            : "Select Option"}
+        </span>
         <svg
           className={`h-4 w-4 transform transition-transform ${isOpen ? "rotate-180" : ""}`}
           fill="none"

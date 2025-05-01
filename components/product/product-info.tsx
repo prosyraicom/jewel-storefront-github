@@ -1,6 +1,7 @@
 "use client";
 
 import { AddToCart } from "components/cart/add-to-cart";
+import { useProduct } from "components/product/product-context";
 import { Product } from "lib/shopify/types";
 import { useRef } from "react";
 import { EstimatedShipping } from "./estimated-shipping";
@@ -16,6 +17,19 @@ import { VariantDropdown } from "./variant-dropdown";
 export function ProductInfo({ product }: { product: Product }) {
   // Create a ref for the AddToCart button
   const addToCartRef = useRef<HTMLDivElement>(null);
+  const { state } = useProduct();
+
+  // Find the selected variant based on the current state
+  const selectedVariant =
+    product.variants.find((variant) =>
+      variant.selectedOptions.every(
+        (option) => option.value === state[option.name.toLowerCase()]
+      )
+    ) || product.variants[0]; // Fallback to first variant if none selected
+
+  if (!selectedVariant) {
+    return null; // Handle case where no variants exist
+  }
 
   // Mock compareAtPrice for demonstration purposes
   const compareAtPrice = {
@@ -30,8 +44,8 @@ export function ProductInfo({ product }: { product: Product }) {
       <ProductRating />
       <ProductPrice
         price={{
-          amount: product.priceRange.maxVariantPrice.amount.toString(),
-          currencyCode: product.priceRange.maxVariantPrice.currencyCode,
+          amount: selectedVariant.price.amount.toString(),
+          currencyCode: selectedVariant.price.currencyCode,
         }}
         compareAtPrice={{
           amount: compareAtPrice.amount.toString(),
