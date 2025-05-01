@@ -26,14 +26,6 @@ export function VariantDropdown({
   const { postHogBaseInfo } = usePostHog();
   const [isOpen, setIsOpen] = useState(false);
 
-  const hasNoOptionsOrJustOneOption =
-    !options.length ||
-    (options.length === 1 && options[0]?.values.length === 1);
-
-  if (hasNoOptionsOrJustOneOption) {
-    return null;
-  }
-
   // Preselect the first available variant if no variant is selected
   useEffect(() => {
     const firstOption = options[0];
@@ -88,60 +80,69 @@ export function VariantDropdown({
 
   return (
     <div className="relative mb-4">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900 z-10"
-      >
-        <span>
-          {options[0]
-            ? state[options[0].name.toLowerCase()] ||
-              `Select ${options[0].name}`
-            : "Select Option"}
-        </span>
-        <svg
-          className={`h-4 w-4 transform transition-transform ${isOpen ? "rotate-180" : ""}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      <label className="block mb-2 text-sm font-medium text-black dark:text-white">
+        {options[0]?.name}
+      </label>
+      <div className="w-1/2">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex w-full items-center justify-between rounded-md border border-[#23ae3b] bg-[#23ae3b]/10 px-4 py-2 text-sm text-[#23ae3b] dark:border-[#23ae3b] dark:bg-[#23ae3b]/20 dark:text-[#23ae3b] z-10"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </button>
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-full rounded-md border border-neutral-300 bg-white shadow-lg dark:border-neutral-700 dark:bg-neutral-900 z-50">
-          {options[0]?.values.map((value) => {
-            const optionNameLowerCase = options[0]?.name.toLowerCase() || "";
-            const isActive = state[optionNameLowerCase] === value;
-            const isAvailableForSale = combinations.some(
-              (combination) =>
-                combination[optionNameLowerCase] === value &&
-                combination.availableForSale
-            );
+          <span>
+            {options[0]
+              ? state[options[0].name.toLowerCase()] ||
+                `Select ${options[0].name}`
+              : "Select Option"}
+          </span>
+          <svg
+            className={`h-4 w-4 transform transition-transform ${isOpen ? "rotate-180" : ""} ml-2`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+        {isOpen && (
+          <div className="absolute mt-2 w-full rounded-md border border-neutral-300 bg-white shadow-lg dark:border-neutral-700 dark:bg-neutral-900 z-50">
+            {options[0]?.values.map((value) => {
+              const optionNameLowerCase = options[0]?.name.toLowerCase() || "";
+              const isActive = state[optionNameLowerCase] === value;
+              const isAvailableForSale = combinations.some(
+                (combination) =>
+                  combination[optionNameLowerCase] === value &&
+                  combination.availableForSale
+              );
 
-            return (
-              <button
-                key={value}
-                onClick={() => handleVariantSelect(optionNameLowerCase, value)}
-                disabled={!isAvailableForSale}
-                className={`block w-full px-4 py-2 text-left text-sm ${
-                  isActive ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20" : ""
-                } ${
-                  !isAvailableForSale
-                    ? "cursor-not-allowed text-neutral-400 dark:text-neutral-600"
-                    : "hover:bg-neutral-50 dark:hover:bg-neutral-800"
-                }`}
-              >
-                {value}
-              </button>
-            );
-          })}
-        </div>
-      )}
+              return (
+                <button
+                  key={value}
+                  onClick={() =>
+                    handleVariantSelect(optionNameLowerCase, value)
+                  }
+                  disabled={!isAvailableForSale}
+                  className={`block w-full px-4 py-2 text-left text-sm ${
+                    isActive
+                      ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20"
+                      : ""
+                  } ${
+                    !isAvailableForSale
+                      ? "cursor-not-allowed text-neutral-400 dark:text-neutral-600"
+                      : "hover:bg-neutral-50 dark:hover:bg-neutral-800"
+                  }`}
+                >
+                  {value}
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
