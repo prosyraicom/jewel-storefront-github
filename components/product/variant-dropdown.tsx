@@ -83,7 +83,7 @@ export function VariantDropdown({
       <label className="block mb-2 text-sm font-medium text-black dark:text-white">
         {options[0]?.name}
       </label>
-      <div className="w-1/2">
+      <div className="w-1/2 relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="flex w-full items-center justify-between rounded-md border border-[#23ae3b] bg-[#23ae3b]/10 px-4 py-2 text-sm text-[#23ae3b] dark:border-[#23ae3b] dark:bg-[#23ae3b]/20 dark:text-[#23ae3b] z-10"
@@ -109,7 +109,7 @@ export function VariantDropdown({
           </svg>
         </button>
         {isOpen && (
-          <div className="absolute mt-2 w-full rounded-md border border-neutral-300 bg-white shadow-lg dark:border-neutral-700 dark:bg-neutral-900 z-50">
+          <div className="absolute left-0 right-0 mt-2 rounded-md border border-neutral-300 bg-white shadow-lg dark:border-neutral-700 dark:bg-neutral-900 z-50">
             {options[0]?.values.map((value) => {
               const optionNameLowerCase = options[0]?.name.toLowerCase() || "";
               const isActive = state[optionNameLowerCase] === value;
