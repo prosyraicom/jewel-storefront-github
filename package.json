@@ -9,6 +9,8 @@
     "test": "pnpm prettier:check"
   },
   "dependencies": {
+    "@builder.io/react": "^8.1.2",
+    "@builder.io/sdk": "^6.0.9",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@radix-ui/react-dialog": "^1.1.11",
