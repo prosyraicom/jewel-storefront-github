@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import ProductVideoFeature from "@/components/product/ProductVideoFeature";
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
 import { ProductProvider } from "components/product/product-context";
@@ -115,6 +116,21 @@ export default async function ProductPage(props: {
           </div>
         </div>
 
+        {/* Product Video Feature Example */}
+        <ProductVideoFeature
+          title="Embrace irresistible Charm!"
+          description="Enjoy a captivating scent that boosts your confidence and makes you unforgettable."
+          videoSrc="https://www.w3schools.com/html/mov_bbb.mp4"
+          videoPosition="right"
+        />
+
+        {/* Product Video Feature Example */}
+        <ProductVideoFeature
+          title="Embrace irresistible Charm!"
+          description="Enjoy a captivating scent that boosts your confidence and makes you unforgettable."
+          videoSrc="https://www.w3schools.com/html/mov_bbb.mp4"
+          videoPosition="left"
+        />
         {/* Product Guarantee Section */}
         <ProductGuarantee />
       </div>
