@@ -150,9 +150,13 @@ export function QuantitySelector({
   };
 
   return (
-    <div className="w-full">
-      <div className="text-center border-t border-b border-black py-2 mb-4">
-        <span className="font-bold">LIMITED TIME OFFER | SAVE $100+</span>
+    <div className="w-full mb-4">
+      <div className="flex items-center my-4">
+        <div className="flex-grow border-t border-black"></div>
+        <span className="mx-4 font-bold tracking-wide">
+          LIMITED TIME OFFER | SAVE $100+
+        </span>
+        <div className="flex-grow border-t border-black"></div>
       </div>
 
       <div className="flex flex-col gap-4">

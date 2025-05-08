@@ -1,5 +1,6 @@
 import { getMenu } from "lib/shopify";
 import NavbarMenu from "./menu";
+import MovingBanner from "./moving-banner";
 import Timer from "./timer";
 
 const { SITE_NAME } = process.env;
@@ -51,6 +52,9 @@ export async function Navbar() {
           💖
         </p>
       </div>
+
+      {/* Moving banner below the white header */}
+      <MovingBanner />
 
       {/* White header - menu, logo, cart part */}
       <div className="border-b">

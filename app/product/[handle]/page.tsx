@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import ProductVideoFeature from "@/components/product/ProductVideoFeature";
+import ProductVideoFeature from "@/components/product/product-video-feature";
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
 import { ProductProvider } from "components/product/product-context";

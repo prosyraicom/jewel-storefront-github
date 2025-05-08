@@ -5,8 +5,10 @@ import { useProduct } from "components/product/product-context";
 import { Product } from "lib/shopify/types";
 import { useRef } from "react";
 import { EstimatedShipping } from "./estimated-shipping";
+import { ProductChecklist } from "./product-checklist";
 import { ProductContent } from "./product-content";
 import { ProductFeatures } from "./product-features";
+import { ProductInfoReview } from "./product-info-review";
 import { ProductPrice } from "./product-price";
 import { ProductRating } from "./product-rating";
 import { ProductTitle } from "./product-title";
@@ -54,25 +56,33 @@ export function ProductInfo({ product }: { product: Product }) {
         }}
       />
       {/* <VariantDropdown options={product.options} variants={product.variants} /> */}
+      <ProductChecklist
+        features={[
+          "curbs cravings",
+          "boosts metabolism",
+          "improves digestion",
+          "promotes weight loss",
+        ]}
+      />
+      <ProductInfoReview
+        review="I've been using this product for a week and I've already seen a difference in my energy levels. I'm more focused and less hungry."
+        name="John Doe"
+        stars={4.5}
+      />
       <VariantSelect options={product.options} variants={product.variants} />
       {/* Our new Quantity Selector with variant dropdowns */}
       <QuantitySelector options={product.options} variants={product.variants} />
-
       {/* Add ref to track the AddToCart button position */}
       <div ref={addToCartRef}>
         <AddToCart product={product} />
       </div>
       {/* <BuyNowButton product={product} /> */}
-
       {/* Product Features with Icons */}
       <ProductFeatures />
-
       {/* Estimated Shipping Text */}
       <EstimatedShipping />
-
       {/* Product Description */}
       <ProductContent descriptionHtml={product.descriptionHtml} />
-
       {/* Sticky Add to Cart component */}
       <StickyAddToCart product={product} addToCartRef={addToCartRef} />
     </div>
