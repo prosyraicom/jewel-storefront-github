@@ -2,6 +2,7 @@
 
 import { usePostHog } from "components/posthog-context";
 import { ProductOption, ProductVariant } from "lib/shopify/types";
+import { useRouter, useSearchParams } from "next/navigation";
 import posthog from "posthog-js";
 import { useEffect, useState } from "react";
 import { VariantSelector } from "./variant-selector";
@@ -25,9 +26,17 @@ export function QuantitySelector({
   options: ProductOption[];
   variants: ProductVariant[];
 }) {
-  const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
-  const [selectedVariants, setSelectedVariants] = useState<string[]>([]);
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { postHogBaseInfo } = usePostHog();
+
+  // Get quantity from URL or default to 1
+  const initialQuantity = parseInt(searchParams.get("quantity") || "1", 10);
+  const [selectedQuantity, setSelectedQuantity] =
+    useState<number>(initialQuantity);
+
+  // Get variants from URL or initialize with empty array
+  const [selectedVariants, setSelectedVariants] = useState<string[]>([]);
 
   const quantityOptions: QuantityOption[] = [
     {
@@ -76,16 +85,48 @@ export function QuantitySelector({
     },
   ];
 
-  // Initialize selected variants with the first variant
+  // Initialize selected variants from URL or with defaults
   useEffect(() => {
     if (variants.length && options.length) {
       const initialVariant = options[0]?.values[0] || "";
-      setSelectedVariants(Array(4).fill(initialVariant));
+      const variantsFromUrl: string[] = [];
+
+      // Read variants from URL
+      for (let i = 0; i < 4; i++) {
+        const variantParam = searchParams.get(`variant${i + 1}`);
+        variantsFromUrl.push(variantParam || initialVariant);
+      }
+
+      setSelectedVariants(variantsFromUrl);
     }
-  }, [variants, options]);
+  }, [variants, options, searchParams]);
+
+  // Update URL when quantity or variants change
+  const updateUrl = (quantity: number, updatedVariants: string[]) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    // Set quantity parameter
+    params.set("quantity", quantity.toString());
+
+    // Set variant parameters
+    for (let i = 0; i < quantity; i++) {
+      if (updatedVariants[i]) {
+        params.set(`variant${i + 1}`, updatedVariants[i] || "");
+      }
+    }
+
+    // Remove unused variant parameters
+    for (let i = quantity; i < 4; i++) {
+      params.delete(`variant${i + 1}`);
+    }
+
+    // Update URL without refreshing the page
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
 
   const handleQuantityChange = (quantity: number) => {
     setSelectedQuantity(quantity);
+    updateUrl(quantity, selectedVariants);
 
     // Track quantity selection
     posthog.capture("quantity_selected", {
@@ -98,6 +139,7 @@ export function QuantitySelector({
     const newSelectedVariants = [...selectedVariants];
     newSelectedVariants[index] = variant;
     setSelectedVariants(newSelectedVariants);
+    updateUrl(selectedQuantity, newSelectedVariants);
 
     // Track variant change for specific position
     posthog.capture("pack_variant_selected", {
@@ -172,7 +214,9 @@ export function QuantitySelector({
                         options={options}
                         variants={variants}
                         position={index + 1}
-                        onSelect={handleVariantChange}
+                        onSelect={(_, variant) =>
+                          handleVariantChange(index, variant)
+                        }
                         selectedValue={selectedVariants[index] || ""}
                       />
                     </div>
