@@ -10,9 +10,10 @@ import { ProductFeatures } from "./product-features";
 import { ProductPrice } from "./product-price";
 import { ProductRating } from "./product-rating";
 import { ProductTitle } from "./product-title";
+import { QuantitySelector } from "./quantity-selector";
 import { StickyAddToCart } from "./sticky-add-to-cart";
 import { UrgencyText } from "./urgency-text";
-import { VariantDropdown } from "./variant-dropdown";
+import { VariantSelect } from "./variant-selector-buttons";
 
 export function ProductInfo({ product }: { product: Product }) {
   // Create a ref for the AddToCart button
@@ -52,7 +53,10 @@ export function ProductInfo({ product }: { product: Product }) {
           currencyCode: compareAtPrice.currencyCode,
         }}
       />
-      <VariantDropdown options={product.options} variants={product.variants} />
+      {/* <VariantDropdown options={product.options} variants={product.variants} /> */}
+      <VariantSelect options={product.options} variants={product.variants} />
+      {/* Our new Quantity Selector with variant dropdowns */}
+      <QuantitySelector options={product.options} variants={product.variants} />
 
       {/* Add ref to track the AddToCart button position */}
       <div ref={addToCartRef}>

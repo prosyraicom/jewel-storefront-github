@@ -1,108 +1,82 @@
 "use client";
 
 import { usePostHog } from "components/posthog-context";
-import { useProduct, useUpdateURL } from "components/product/product-context";
 import { ProductOption, ProductVariant } from "lib/shopify/types";
 import posthog from "posthog-js";
-
-type Combination = {
-  id: string;
-  availableForSale: boolean;
-  [key: string]: string | boolean;
-};
+import { useState } from "react";
 
 export function VariantSelector({
   options,
   variants,
+  position,
+  onSelect,
+  selectedValue,
 }: {
   options: ProductOption[];
   variants: ProductVariant[];
+  position: number;
+  onSelect: (position: number, variant: string) => void;
+  selectedValue: string;
 }) {
-  const { state, updateOption } = useProduct();
-  const updateURL = useUpdateURL();
+  const [isOpen, setIsOpen] = useState(false);
   const { postHogBaseInfo } = usePostHog();
 
-  if (!options.length) {
-    return null;
-  }
+  const handleSelect = (value: string) => {
+    onSelect(position - 1, value);
+    setIsOpen(false);
 
-  const combinations: Combination[] = variants.map((variant) => ({
-    id: variant.id,
-    availableForSale: variant.availableForSale,
-    ...variant.selectedOptions.reduce(
-      (accumulator, option) => ({
-        ...accumulator,
-        [option.name.toLowerCase()]: option.value,
-      }),
-      {}
-    ),
-  }));
-
-  const handleVariantSelect = (optionName: string, value: string) => {
-    const newState = updateOption(optionName, value);
-    updateURL(newState);
-
-    // Track variant selection
-    posthog.capture("variant_selected", {
+    // Track selection
+    posthog.capture("pack_variant_selected", {
       ...postHogBaseInfo,
-      option_name: optionName,
-      option_value: value,
-      product_id: variants[0]?.id,
-      product_title: variants[0]?.title,
-      is_available: combinations.some(
-        (combination) =>
-          combination[optionName.toLowerCase()] === value &&
-          combination.availableForSale
-      ),
+      position: position,
+      variant: value,
     });
   };
 
+  // If no options are available, don't render
+  if (!options.length || !options[0]?.values.length) {
+    return null;
+  }
+
   return (
-    <div className="mb-2 text-black">
-      {options.map((option) => {
-        const optionNameLowerCase = option.name.toLowerCase();
-        const selectedValue = state[optionNameLowerCase] || option.values[0];
+    <div className="relative w-full">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm"
+      >
+        <span>{selectedValue || options[0].values[0]}</span>
+        <svg
+          className={`h-4 w-4 transform transition-transform ${isOpen ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
 
-        return (
-          <div key={option.id} className="mb-4">
-            <label
-              htmlFor={`select-${optionNameLowerCase}`}
-              className="block mb-2 text-sm font-medium text-black"
+      {isOpen && (
+        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+          {options[0].values.map((value) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => handleSelect(value)}
+              className={`block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 ${
+                selectedValue === value ? "bg-gray-50 font-medium" : ""
+              }`}
             >
-              {option.name}
-            </label>
-            <select
-              id={`select-${optionNameLowerCase}`}
-              value={selectedValue}
-              onChange={(e) => {
-                const newValue = e.target.value;
-                handleVariantSelect(optionNameLowerCase, newValue);
-              }}
-              className="max-w-xs p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-black bg-white"
-            >
-              {option.values.map((value) => {
-                // Check if this value is available (not sold out)
-                const optionParams = { ...state, [optionNameLowerCase]: value };
-                const isAvailable = variants.some(
-                  (variant) =>
-                    variant.selectedOptions.every(
-                      (opt) =>
-                        optionParams[opt.name.toLowerCase()] === opt.value ||
-                        !optionParams[opt.name.toLowerCase()]
-                    ) && variant.availableForSale
-                );
-
-                return (
-                  <option key={value} value={value} disabled={!isAvailable}>
-                    {value}
-                    {!isAvailable ? " (Out of Stock)" : ""}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-        );
-      })}
+              {value}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
