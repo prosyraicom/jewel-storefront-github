@@ -25,7 +25,7 @@ type CartAction =
     }
   | {
       type: "ADD_ITEM";
-      payload: { variant: ProductVariant; product: Product };
+      payload: { variant: ProductVariant; product: Product; quantity?: number };
     }
   | {
       type: "SET_CART";
@@ -35,7 +35,11 @@ type CartAction =
 type CartContextType = {
   cart: Cart | undefined;
   updateCartItem: (merchandiseId: string, updateType: UpdateType) => void;
-  addCartItem: (variant: ProductVariant, product: Product) => void;
+  addCartItem: (
+    variant: ProductVariant,
+    product: Product,
+    quantity?: number
+  ) => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -108,15 +112,18 @@ function updateCartItem(
 function createOrUpdateCartItem(
   existingItem: CartItem | undefined,
   variant: ProductVariant,
-  product: Product
+  product: Product,
+  quantity: number = 1
 ): CartItem {
-  const quantity = existingItem ? Number(existingItem.quantity) + 1 : 1;
-  const totalAmount = calculateItemCost(quantity, variant.price.amount);
+  const newQuantity = existingItem
+    ? Number(existingItem.quantity) + quantity
+    : quantity;
+  const totalAmount = calculateItemCost(newQuantity, variant.price.amount);
 
   return {
     // Generate an ID if it doesn't exist
     id: existingItem?.id || generateId(),
-    quantity,
+    quantity: newQuantity,
     cost: {
       totalAmount: {
         amount: totalAmount,
@@ -208,14 +215,15 @@ function cartReducer(state: Cart, action: CartAction): Cart {
       };
     }
     case "ADD_ITEM": {
-      const { variant, product } = action.payload;
+      const { variant, product, quantity } = action.payload;
       const existingItem = state.lines.find(
         (item) => item.merchandise.id === variant.id
       );
       const updatedItem = createOrUpdateCartItem(
         existingItem,
         variant,
-        product
+        product,
+        quantity
       );
 
       const updatedLines = existingItem
@@ -300,7 +308,11 @@ export function CartProvider({
     });
   };
 
-  const addCartItem = (variant: ProductVariant, product: Product) => {
+  const addCartItem = (
+    variant: ProductVariant,
+    product: Product,
+    quantity: number = 1
+  ) => {
     if (!isClient) return;
 
     // Create an empty cart if no cart exists
@@ -308,7 +320,7 @@ export function CartProvider({
       const newCart = createEmptyCart();
       const updatedCart = cartReducer(newCart, {
         type: "ADD_ITEM",
-        payload: { variant, product },
+        payload: { variant, product, quantity },
       });
 
       setCart(updatedCart);
@@ -322,13 +334,14 @@ export function CartProvider({
         variant_id: variant.id,
         price: variant.price.amount,
         currency: variant.price.currencyCode,
+        quantity: quantity,
       });
       return;
     }
 
     const updatedCart = cartReducer(cart, {
       type: "ADD_ITEM",
-      payload: { variant, product },
+      payload: { variant, product, quantity },
     });
 
     setCart(updatedCart);
@@ -342,6 +355,7 @@ export function CartProvider({
       variant_id: variant.id,
       price: variant.price.amount,
       currency: variant.price.currencyCode,
+      quantity: quantity,
       cart_total: updatedCart.cost.totalAmount.amount,
       cart_currency: updatedCart.cost.totalAmount.currencyCode,
       cart_items_count: updatedCart.totalQuantity,

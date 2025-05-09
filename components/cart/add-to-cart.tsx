@@ -48,7 +48,7 @@ function SubmitButton({
         "hover:opacity-90": true,
       })}
     >
-      {quantity > 1 ? `Add ${quantity} to cart` : "Add to cart"}
+      Add to cart
     </button>
   );
 }
@@ -85,7 +85,7 @@ export function AddToCart({ product }: { product: Product }) {
       // For single item, use the default variant
       const singleVariant = defaultVariant || variants[0];
       if (singleVariant) {
-        addCartItem(singleVariant, product);
+        addCartItem(singleVariant, product, 1);
 
         // Track single item addition
         posthog.capture("add_to_cart", {
@@ -97,23 +97,20 @@ export function AddToCart({ product }: { product: Product }) {
       }
     } else {
       // For multiple items, read variants from URL
-      for (let i = 0; i < quantity; i++) {
-        const variantParam = searchParams.get(`variant${i + 1}`);
-        if (variantParam) {
-          const variant = findVariantByValue(variantParam);
-          if (variant) {
-            addCartItem(variant, product);
+      const variantParam = searchParams.get("variant1");
+      if (variantParam) {
+        const variant = findVariantByValue(variantParam);
+        if (variant) {
+          addCartItem(variant, product, quantity);
 
-            // Track each variant addition
-            posthog.capture("add_to_cart", {
-              ...postHogBaseInfo,
-              quantity: 1,
-              variant_id: variant.id,
-              product_id: product.id,
-              position: i + 1,
-              total_quantity: quantity,
-            });
-          }
+          // Track multiple items addition
+          posthog.capture("add_to_cart", {
+            ...postHogBaseInfo,
+            quantity: quantity,
+            variant_id: variant.id,
+            product_id: product.id,
+            total_quantity: quantity,
+          });
         }
       }
     }

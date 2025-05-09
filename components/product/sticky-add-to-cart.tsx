@@ -94,10 +94,10 @@ export function StickyAddToCart({
 
           {/* Product Title and Rating and Price scaled down */}
           <div className="flex flex-col w-full md:w-auto">
-            <h3 className="text-md font-medium line-clamp-2 text-center md:text-left">
+            <h3 className="text-md font-medium line-clamp-2 text-start md:text-left">
               {product.title}
             </h3>
-            <div className="flex items-center justify-center md:justify-start">
+            <div className="flex items-center justify-start md:justify-start">
               <div className="flex items-center">
                 <ProductRating />
               </div>
