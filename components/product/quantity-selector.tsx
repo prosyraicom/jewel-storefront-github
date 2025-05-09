@@ -22,9 +22,13 @@ interface QuantityOption {
 export function QuantitySelector({
   options,
   variants,
+  basePrice,
+  compareAtPrice,
 }: {
   options: ProductOption[];
   variants: ProductVariant[];
+  basePrice: number;
+  compareAtPrice?: number;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -38,16 +42,19 @@ export function QuantitySelector({
   // Get variants from URL or initialize with empty array
   const [selectedVariants, setSelectedVariants] = useState<string[]>([]);
 
+  // Calculate prices and savings for each quantity option
   const quantityOptions: QuantityOption[] = [
     {
       id: 1,
       quantity: 1,
       label: "Buy 1",
       subLabel: "1 Pack (30-Day Supply)",
-      price: 10,
-      originalPrice: 50,
-      saveAmount: 40,
-      saveText: "You save $40",
+      price: basePrice,
+      originalPrice: compareAtPrice || basePrice,
+      saveAmount: compareAtPrice ? compareAtPrice - basePrice : 0,
+      saveText: compareAtPrice
+        ? `You save $${(compareAtPrice - basePrice).toFixed(2)}`
+        : "",
       supply: "30-Day Supply",
     },
     {
@@ -55,10 +62,12 @@ export function QuantitySelector({
       quantity: 2,
       label: "Buy 2",
       subLabel: "2 Packs (60-Day Supply)",
-      price: 20,
-      originalPrice: 100,
-      saveAmount: 80,
-      saveText: "You save $80",
+      price: basePrice * 2,
+      originalPrice: (compareAtPrice || basePrice) * 2,
+      saveAmount: compareAtPrice ? (compareAtPrice - basePrice) * 2 : 0,
+      saveText: compareAtPrice
+        ? `You save $${((compareAtPrice - basePrice) * 2).toFixed(2)}`
+        : "",
       supply: "60-Day Supply",
     },
     {
@@ -66,10 +75,12 @@ export function QuantitySelector({
       quantity: 3,
       label: "Buy 3",
       subLabel: "3 Packs (90-Day Supply)",
-      price: 30,
-      originalPrice: 150,
-      saveAmount: 120,
-      saveText: "You save $120",
+      price: basePrice * 3,
+      originalPrice: (compareAtPrice || basePrice) * 3,
+      saveAmount: compareAtPrice ? (compareAtPrice - basePrice) * 3 : 0,
+      saveText: compareAtPrice
+        ? `You save $${((compareAtPrice - basePrice) * 3).toFixed(2)}`
+        : "",
       supply: "90-Day Supply",
     },
     {
@@ -77,10 +88,12 @@ export function QuantitySelector({
       quantity: 4,
       label: "Buy 4",
       subLabel: "4 Packs (120-Day Supply)",
-      price: 40,
-      originalPrice: 200,
-      saveAmount: 160,
-      saveText: "You save $160",
+      price: basePrice * 4,
+      originalPrice: (compareAtPrice || basePrice) * 4,
+      saveAmount: compareAtPrice ? (compareAtPrice - basePrice) * 4 : 0,
+      saveText: compareAtPrice
+        ? `You save $${((compareAtPrice - basePrice) * 4).toFixed(2)}`
+        : "",
       supply: "120-Day Supply",
     },
   ];

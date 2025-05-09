@@ -37,8 +37,12 @@ export function ProductInfo({ product }: { product: Product }) {
 
   // Mock compareAtPrice for demonstration purposes
   const compareAtPrice = {
-    amount: parseFloat(product.compareAtPriceRange.maxVariantPrice.amount),
-    currencyCode: product.compareAtPriceRange.maxVariantPrice.currencyCode,
+    amount: product.compareAtPriceRange?.maxVariantPrice?.amount
+      ? product.compareAtPriceRange.maxVariantPrice.amount
+      : selectedVariant.price.amount,
+    currencyCode:
+      product.compareAtPriceRange?.maxVariantPrice?.currencyCode ||
+      selectedVariant.price.currencyCode,
   };
 
   return (
@@ -48,11 +52,11 @@ export function ProductInfo({ product }: { product: Product }) {
       <ProductRating />
       <ProductPrice
         price={{
-          amount: selectedVariant.price.amount.toString(),
+          amount: selectedVariant.price.amount,
           currencyCode: selectedVariant.price.currencyCode,
         }}
         compareAtPrice={{
-          amount: compareAtPrice.amount.toString(),
+          amount: compareAtPrice.amount,
           currencyCode: compareAtPrice.currencyCode,
         }}
       />
@@ -72,7 +76,12 @@ export function ProductInfo({ product }: { product: Product }) {
       />
       <VariantSelect options={product.options} variants={product.variants} />
       {/* Our new Quantity Selector with variant dropdowns */}
-      <QuantitySelector options={product.options} variants={product.variants} />
+      <QuantitySelector
+        options={product.options}
+        variants={product.variants}
+        basePrice={parseFloat(selectedVariant.price.amount)}
+        compareAtPrice={parseFloat(compareAtPrice.amount)}
+      />
       {/* Add ref to track the AddToCart button position */}
       <div ref={addToCartRef}>
         <AddToCart product={product} />
@@ -92,7 +101,7 @@ export function ProductInfo({ product }: { product: Product }) {
           {
             header: "Recommended use",
             content:
-              "1. **Tear open** one Shilajit stick.\n2. **Sip directly** from the packet or mix it with your favorite drink.\n3. Enjoy the energy, focus, and stamina boost to power through your day!\n\n**Tip:** Avoid taking it before bedtime if you don’t want to stay awake.",
+              "1. **Tear open** one Shilajit stick.\n2. **Sip directly** from the packet or mix it with your favorite drink.\n3. Enjoy the energy, focus, and stamina boost to power through your day!\n\n**Tip:** Avoid taking it before bedtime if you don't want to stay awake.",
           },
         ]}
       />

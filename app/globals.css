@@ -204,3 +204,10 @@ button {
 .animate-marquee {
   animation: marquee 20s linear infinite;
 }
+
+/* Faster animation on mobile devices */
+@media (max-width: 768px) {
+  .animate-marquee {
+    animation: marquee 12s linear infinite;
+  }
+}

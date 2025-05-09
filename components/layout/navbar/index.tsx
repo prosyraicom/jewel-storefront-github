@@ -53,13 +53,13 @@ export async function Navbar() {
         </p>
       </div>
 
-      {/* Moving banner below the white header */}
-      <MovingBanner />
-
       {/* White header - menu, logo, cart part */}
       <div className="border-b">
         <NavbarMenu menu={menu} />
       </div>
+
+      {/* Moving banner below the white header */}
+      <MovingBanner />
     </>
   );
 }
