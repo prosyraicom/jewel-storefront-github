@@ -21,7 +21,7 @@ export default function ProductVideoFeature({
       >
         <video
           src={videoSrc}
-          className="rounded-xl w-full max-w-md object-cover"
+          className="rounded-xl w-full object-cover"
           autoPlay
           loop
           muted

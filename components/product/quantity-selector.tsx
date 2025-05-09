@@ -167,17 +167,20 @@ export function QuantitySelector({
           return (
             <div
               key={option.id}
-              className={`relative border rounded-lg p-4 ${
+              className={`relative border rounded-lg p-4 transition-colors duration-200 hover:bg-gray-50 ${
                 isSelected ? "border-2 border-black" : "border-gray-300"
               }`}
             >
               {isMostPopular && (
-                <div className="absolute right-0 top-0 bg-black text-white px-3 py-1 rounded-bl-lg rounded-tr-lg text-sm font-bold">
+                <div className="absolute -right-4 top-0 bg-black text-white px-3 py-1 text-sm font-bold rotate-10 origin-top-right">
                   Most Popular
                 </div>
               )}
 
-              <div className="flex justify-between items-center">
+              <label
+                htmlFor={`quantity-${option.quantity}`}
+                className="flex justify-between items-center cursor-pointer"
+              >
                 <div className="flex items-center gap-4">
                   <input
                     type="radio"
@@ -188,12 +191,7 @@ export function QuantitySelector({
                     className="w-4 h-4"
                   />
                   <div>
-                    <label
-                      htmlFor={`quantity-${option.quantity}`}
-                      className="font-bold text-lg cursor-pointer"
-                    >
-                      {option.label}
-                    </label>
+                    <span className="font-bold text-lg">{option.label}</span>
                     <span className="ml-2 px-2 py-1 text-xs bg-gray-200 rounded-full">
                       {option.saveText}
                     </span>
@@ -206,7 +204,7 @@ export function QuantitySelector({
                     ${option.originalPrice}
                   </div>
                 </div>
-              </div>
+              </label>
 
               {/* Show variant selectors only if this quantity is selected and quantity > 1 */}
               {isSelected && option.quantity > 1 && (

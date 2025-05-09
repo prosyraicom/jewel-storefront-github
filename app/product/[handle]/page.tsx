@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProductCustomersReviews } from "@/components/product/product-customers-reviews";
+import ProductImageFeature from "@/components/product/product-image-feature";
+import { ProductMultipleVideos } from "@/components/product/product-multiple-videos";
 import ProductVideoFeature from "@/components/product/product-video-feature";
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
@@ -145,6 +147,20 @@ export default async function ProductPage(props: {
           </div>
         </div>
 
+        <ProductImageFeature
+          title="Feeling drained and unfocused?"
+          description="Unleash your full potential with Shilajit—the potent, natural powerhouse that revives your energy, boosts your stamina, and sharpens your mental clarity. Packed with essential minerals and nutrients, Shilajit delivers a sustained, unstoppable flow of vitality to keep you at your peak, all day long. Don't just get through the day—thrive with Shilajit!"
+          imageSrc="https://www.placecats.com/600/400"
+          imagePosition="right"
+        />
+
+        <ProductImageFeature
+          title="Stunning Product Image"
+          description="Unleash your full potential with Shilajit—the potent, natural powerhouse that revives your energy, boosts your stamina, and sharpens your mental clarity. Packed with essential minerals and nutrients, Shilajit delivers a sustained, unstoppable flow of vitality to keep you at your peak, all day long. Don't just get through the day—thrive with Shilajit!"
+          imageSrc="https://www.placecats.com/600/400"
+          imagePosition="left"
+        />
+
         {/* Product Video Feature Example */}
         <ProductVideoFeature
           title="Embrace irresistible Charm!"
@@ -159,6 +175,14 @@ export default async function ProductPage(props: {
           description="Enjoy a captivating scent that boosts your confidence and makes you unforgettable."
           videoSrc="https://www.w3schools.com/html/mov_bbb.mp4"
           videoPosition="left"
+        />
+        <ProductMultipleVideos
+          title="Feel the energy – Join 25,000+ people who love Shilajit Sticks!"
+          videos={[
+            "https://www.w3schools.com/html/mov_bbb.mp4",
+            "https://www.w3schools.com/html/mov_bbb.mp4",
+            "https://www.w3schools.com/html/mov_bbb.mp4",
+          ]}
         />
         <ProductCustomersReviews
           header={"Customer Reviews"}

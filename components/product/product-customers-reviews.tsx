@@ -41,7 +41,7 @@ export function ProductCustomersReviews({
 
   return (
     <div className="w-full py-8">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-8">{header}</h2>
         {/* Desktop View - Grid Layout */}
         <div className="hidden md:grid md:grid-cols-3 md:gap-6">

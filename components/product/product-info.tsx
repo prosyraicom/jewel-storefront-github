@@ -4,6 +4,7 @@ import { AddToCart } from "components/cart/add-to-cart";
 import { useProduct } from "components/product/product-context";
 import { Product } from "lib/shopify/types";
 import { useRef } from "react";
+import { DropdownInstruction } from "./dropdown-instruction";
 import { EstimatedShipping } from "./estimated-shipping";
 import { ProductChecklist } from "./product-checklist";
 import { ProductContent } from "./product-content";
@@ -81,6 +82,20 @@ export function ProductInfo({ product }: { product: Product }) {
       <ProductFeatures />
       {/* Estimated Shipping Text */}
       <EstimatedShipping />
+      <DropdownInstruction
+        instructions={[
+          {
+            header: "How it works",
+            content:
+              "Shilajit works by providing a natural boost to your energy, stamina, and mental clarity. Crafted from pure, earth-sourced minerals and 75% fulvic acid, it supports fast absorption to deliver sustained vitality throughout your day.\n\nFuel your day with Shilajit—experience **unstoppable energy and clarity!**",
+          },
+          {
+            header: "Recommended use",
+            content:
+              "1. **Tear open** one Shilajit stick.\n2. **Sip directly** from the packet or mix it with your favorite drink.\n3. Enjoy the energy, focus, and stamina boost to power through your day!\n\n**Tip:** Avoid taking it before bedtime if you don’t want to stay awake.",
+          },
+        ]}
+      />
       {/* Product Description */}
       <ProductContent descriptionHtml={product.descriptionHtml} />
       {/* Sticky Add to Cart component */}
