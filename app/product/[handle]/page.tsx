@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { ProductCustomersReviews } from "@/components/product/product-customers-reviews";
 import ProductVideoFeature from "@/components/product/product-video-feature";
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
@@ -81,6 +82,34 @@ export default async function ProductPage(props: {
     },
   };
 
+  // Sample reviews for ProductCustomersReviews
+  const sampleReviews = [
+    {
+      review:
+        "I surprised my husband with this Men's Attraction Perfume, and it has been a game-changer! The scent is perfectly balanced—strong but not overpowering. Every time he wears it, I find myself drawn to him even more.",
+      name: "Alicia S.",
+      stars: 5,
+      imageUrl: "https://www.placecats.com/400/400?image=1",
+      title: "loving it!",
+    },
+    {
+      review:
+        "At first, I was unsure about trying a new fragrance, but this one blew me away. Every time I wear it, I can literally feel heads turning. People compliment me on my scent all the time, and it makes me feel incredibly attractive!",
+      name: "John B.",
+      stars: 5,
+      imageUrl: "https://www.placecats.com/400/400?image=2",
+      title: "it really works!",
+    },
+    {
+      review:
+        "I first spotted this Men's Attraction Perfume in my husband's closet. The scent is so captivating and sexy that I couldn't resist buying him more! Every time he wears it, I find myself wanting to be closer to him. It has an addictive quality that just makes me feel alive. If you want to add some spice to your relationship, this perfume is a must-have!",
+      name: "Emily R.",
+      stars: 5,
+      imageUrl: "https://www.placecats.com/400/400?image=3",
+      title: "must-have!",
+    },
+  ];
+
   return (
     <ProductProvider>
       <script
@@ -130,6 +159,10 @@ export default async function ProductPage(props: {
           description="Enjoy a captivating scent that boosts your confidence and makes you unforgettable."
           videoSrc="https://www.w3schools.com/html/mov_bbb.mp4"
           videoPosition="left"
+        />
+        <ProductCustomersReviews
+          header={"Customer Reviews"}
+          reviews={sampleReviews}
         />
         {/* Product Guarantee Section */}
         <ProductGuarantee />
