@@ -219,25 +219,28 @@ export function QuantitySelector({
                 </div>
               </label>
 
-              {/* Show variant selectors only if this quantity is selected and quantity > 1 */}
-              {isSelected && option.quantity > 1 && (
-                <div className="mt-4 pl-8">
-                  {Array.from({ length: option.quantity }).map((_, index) => (
-                    <div key={index} className="flex items-center mb-2">
-                      <span className="font-bold mr-2">#{index + 1}</span>
-                      <VariantSelector
-                        options={options}
-                        variants={variants}
-                        position={index + 1}
-                        onSelect={(_, variant) =>
-                          handleVariantChange(index, variant)
-                        }
-                        selectedValue={selectedVariants[index] || ""}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+              {/* Show variant selectors only if this quantity is selected, quantity > 1, and there are multiple options */}
+              {isSelected &&
+                option.quantity > 1 &&
+                options[0] &&
+                options[0].values.length > 1 && (
+                  <div className="mt-4 pl-8">
+                    {Array.from({ length: option.quantity }).map((_, index) => (
+                      <div key={index} className="flex items-center mb-2">
+                        <span className="font-bold mr-2">#{index + 1}</span>
+                        <VariantSelector
+                          options={options}
+                          variants={variants}
+                          position={index + 1}
+                          onSelect={(_, variant) =>
+                            handleVariantChange(index, variant)
+                          }
+                          selectedValue={selectedVariants[index] || ""}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
             </div>
           );
         })}

@@ -25,10 +25,16 @@ export function VariantSelect({
   const router = useRouter();
   const { postHogBaseInfo } = usePostHog();
 
-  // Preselect the first available variant if no variant is selected
+  // If there's only one option value, automatically select it
   useEffect(() => {
     const firstOption = options[0];
-    if (firstOption && !state[firstOption.name.toLowerCase()]) {
+    if (firstOption?.name && firstOption.values.length === 1) {
+      const optionName = firstOption.name.toLowerCase();
+      const optionValue = firstOption.values[0];
+      if (typeof optionName === "string" && typeof optionValue === "string") {
+        handleVariantSelect(optionName, optionValue);
+      }
+    } else if (firstOption?.name && !state[firstOption.name.toLowerCase()]) {
       const firstAvailableValue = firstOption.values.find((value) =>
         combinations.some(
           (combination) =>
@@ -75,6 +81,11 @@ export function VariantSelect({
       ),
     });
   };
+
+  // Don't render anything if there's only one option value
+  if (!options[0] || options[0].values.length <= 1) {
+    return null;
+  }
 
   return (
     <div className="mb-4">
