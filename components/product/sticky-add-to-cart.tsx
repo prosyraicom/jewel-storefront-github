@@ -99,7 +99,7 @@ export function StickyAddToCart({
             </h3>
             <div className="flex items-center justify-start md:justify-start">
               <div className="flex items-center">
-                <ProductRating />
+                <ProductRating rating={4.5} reviewCount={42} />
               </div>
             </div>
             {/* Price - Hidden on mobile */}

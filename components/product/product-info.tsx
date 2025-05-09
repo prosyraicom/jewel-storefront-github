@@ -49,7 +49,7 @@ export function ProductInfo({ product }: { product: Product }) {
     <div className="flex flex-col h-full text-black">
       <UrgencyText text="SOLD OUT 3X+ | Selling fast." />
       <ProductTitle title={product.title} />
-      <ProductRating />
+      <ProductRating rating={4.5} reviewCount={42} />
       <ProductPrice
         price={{
           amount: selectedVariant.price.amount,
